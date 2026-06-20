@@ -155,6 +155,40 @@
         color: #555;
         margin: 20px 0;
       }
+      .editor-content .blockquote-box {
+        background-color: #f4f7ff;
+        padding: 60px 60px;
+        text-align: center;
+        position: relative;
+        margin: 30px 0;
+        border-left: none;
+      }
+      .editor-content .blockquote-box::before {
+        color: #0b2b6a;
+        font-size: 106px;
+        position: absolute;
+        content: "\201C";
+        height: auto;
+        width: 105px;
+        line-height: 100px;
+        top: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .editor-content .blockquote-box .blockquote-text {
+        font-size: 20px;
+        font-weight: 600;
+        margin-top: 30px;
+        font-style: normal;
+        color: inherit;
+      }
+      .editor-content .blockquote-box cite {
+        font-size: 13px;
+        color: #888;
+        font-style: normal;
+        display: block;
+        margin-top: 8px;
+      }
       .editor-content .highlight {
         background: #fff3cd;
         padding: 2px 4px;
@@ -170,6 +204,13 @@
         text-transform: uppercase;
         padding: 3px 9px;
         border-radius: 4px;
+        vertical-align: middle;
+        margin: 0 3px;
+        line-height: 1.6;
+        max-width: 110px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       /* ---- Action bar ---- */

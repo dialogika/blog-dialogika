@@ -10,6 +10,10 @@
 
   var editorEl, toolbarEl;
   var savedSelection = null;
+  var savedAnchorNode = null;
+  var savedAnchorOffset = 0;
+  var savedFocusNode = null;
+  var savedFocusOffset = 0;
 
   BlogGenerator.Editor = {
     /**
@@ -30,8 +34,6 @@
      * Build the toolbar buttons.
      */
     _buildToolbar: function () {
-      var badges = BlogGenerator.Config.badges;
-
       toolbarEl.innerHTML =
         '<div class="editor-toolbar-group">' +
         '  <button type="button" class="editor-btn" data-cmd="formatBlock" data-value="h2" title="Heading 2"><b>H2</b></button>' +
@@ -47,7 +49,7 @@
         '<div class="editor-toolbar-group">' +
         '  <button type="button" class="editor-btn" data-cmd="insertUnorderedList" title="Bullet List"><i class="bi bi-list-ul"></i></button>' +
         '  <button type="button" class="editor-btn" data-cmd="insertOrderedList" title="Numbered List"><i class="bi bi-list-ol"></i></button>' +
-        '  <button type="button" class="editor-btn" data-cmd="formatBlock" data-value="blockquote" title="Blockquote"><i class="bi bi-quote"></i></button>' +
+        '  <button type="button" class="editor-btn" data-action="blockquote" title="Blockquote"><i class="bi bi-quote"></i></button>' +
         "</div>" +
         '<div class="editor-toolbar-group">' +
         '  <button type="button" class="editor-btn" data-action="highlight" title="Highlight"><i class="bi bi-highlighter"></i></button>' +
@@ -64,12 +66,61 @@
      * Bind toolbar and editor events.
      */
     _bindEvents: function () {
-      /* Save selection on mouseup / keyup in editor */
+      /* Save selection continuously via selectionchange */
+      document.addEventListener("selectionchange", function () {
+        if (editorEl && editorEl.contains(document.activeElement) ||
+            (editorEl && window.getSelection().anchorNode &&
+             editorEl.contains(window.getSelection().anchorNode))) {
+          BlogGenerator.Editor._saveSelection();
+        }
+      });
+
+      /* Also save on mouseup / keyup for reliability */
       editorEl.addEventListener("mouseup", function () {
         BlogGenerator.Editor._saveSelection();
       });
       editorEl.addEventListener("keyup", function () {
         BlogGenerator.Editor._saveSelection();
+      });
+
+      /* Prevent toolbar mousedown from stealing focus/selection */
+      toolbarEl.addEventListener("mousedown", function (e) {
+        e.preventDefault();
+      });
+
+      /* Enter key: strip highlight from newly created paragraph */
+      editorEl.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+          var sel = window.getSelection();
+          if (!sel.rangeCount) return;
+          var node = sel.anchorNode;
+          if (node.nodeType !== 1) node = node.parentNode;
+          var insideHighlight = node.closest("span.highlight");
+          if (insideHighlight) {
+            e.preventDefault();
+            /* Insert a new plain <p> after the current block and move cursor there */
+            document.execCommand("insertParagraph", false, null);
+            /* After insert, cursor is in a new node — strip highlight from it */
+            var newSel = window.getSelection();
+            if (newSel.rangeCount) {
+              var cur = newSel.anchorNode;
+              if (cur.nodeType !== 1) cur = cur.parentNode;
+              var hl = cur.closest("span.highlight");
+              if (hl) {
+                /* Move content out of highlight into plain context */
+                var plainP = document.createElement("p");
+                plainP.innerHTML = "<br>";
+                hl.parentNode.insertBefore(plainP, hl.nextSibling);
+                /* Place cursor in the new plain paragraph */
+                var r = document.createRange();
+                r.setStart(plainP, 0);
+                r.collapse(true);
+                newSel.removeAllRanges();
+                newSel.addRange(r);
+              }
+            }
+          }
+        }
       });
 
       /* Toolbar button clicks */
@@ -115,7 +166,10 @@
           BlogGenerator.Editor._wrapSelection("span", "highlight");
           break;
         case "badge":
-          BlogGenerator.Editor._insertBadge();
+          BlogGenerator.Editor._wrapSelection("span", "badge-disruptor");
+          break;
+        case "blockquote":
+          BlogGenerator.Editor._insertBlockquote();
           break;
         case "image":
           BlogGenerator.Editor._showImageModal();
@@ -131,6 +185,8 @@
 
     /**
      * Wrap current selection in a span with given class.
+     * If the entire selection is already inside ONE wrapper (and only that),
+     * unwrap it (toggle off). Otherwise, merge overlapping wrappers into one.
      */
     _wrapSelection: function (tag, className) {
       editorEl.focus();
@@ -143,13 +199,72 @@
       }
 
       var range = selection.getRangeAt(0);
+      var selector = tag + "." + className;
+
+      /* --- Find all wrapper elements overlapping the selection --- */
+      var wrappers = [];
+      var ancestorEl = range.commonAncestorContainer.nodeType === 1
+        ? range.commonAncestorContainer
+        : range.commonAncestorContainer.parentNode;
+
+      /* Check the ancestor itself (TreeWalker only visits descendants) */
+      if (ancestorEl.matches && ancestorEl.matches(selector)) {
+        wrappers.push(ancestorEl);
+      }
+
+      var treeWalker = document.createTreeWalker(
+        ancestorEl,
+        NodeFilter.SHOW_ELEMENT,
+        null
+      );
+      var node;
+      while ((node = treeWalker.nextNode())) {
+        if (node.matches && node.matches(selector) && range.intersectsNode(node)) {
+          wrappers.push(node);
+        }
+      }
+
+      /* --- Check: is the ENTIRE selection inside exactly ONE wrapper? --- */
+      var startNode = range.startContainer.nodeType === 1
+        ? range.startContainer
+        : range.startContainer.parentNode;
+      var endNode = range.endContainer.nodeType === 1
+        ? range.endContainer
+        : range.endContainer.parentNode;
+      var startWrap = startNode.closest(selector);
+      var endWrap = endNode.closest(selector);
+
+      if (wrappers.length === 1 && startWrap === wrappers[0] && endWrap === wrappers[0]) {
+        /* Toggle off: unwrap the single wrapper */
+        var parent = wrappers[0].parentNode;
+        while (wrappers[0].firstChild) {
+          parent.insertBefore(wrappers[0].firstChild, wrappers[0]);
+        }
+        parent.removeChild(wrappers[0]);
+        selection.removeAllRanges();
+        BlogGenerator.Editor._saveSelection();
+        return;
+      }
+
+      /* --- Merge: remove all overlapping wrappers, then wrap the whole range --- */
+      wrappers.forEach(function (w) {
+        var p = w.parentNode;
+        while (w.firstChild) {
+          p.insertBefore(w.firstChild, w);
+        }
+        p.removeChild(w);
+      });
+
+      /* Re-get the range since DOM changed */
+      selection.removeAllRanges();
+      selection.addRange(range);
+
       var wrapper = document.createElement(tag);
       wrapper.className = className;
 
       try {
         range.surroundContents(wrapper);
       } catch (e) {
-        /* If selection crosses element boundaries, extract and wrap */
         var fragment = range.extractContents();
         wrapper.appendChild(fragment);
         range.insertNode(wrapper);
@@ -160,25 +275,27 @@
     },
 
     /**
-     * Insert a badge at cursor or prompt user.
+     * Insert a styled blockquote with text and author/cite.
      */
-    _insertBadge: function () {
-      var badges = BlogGenerator.Config.badges;
-      var choice = prompt(
-        "Pilih badge:\n" +
-        badges.map(function (b, i) { return (i + 1) + ". " + b; }).join("\n") +
-        "\n\nKetik nomor:"
-      );
-
-      if (!choice) return;
-      var index = parseInt(choice, 10) - 1;
-      if (isNaN(index) || index < 0 || index >= badges.length) return;
+    _insertBlockquote: function () {
+      var text = prompt("Masukkan teks kutipan:");
+      if (!text) return;
+      var author = prompt("Masukkan nama penulis / sumber (boleh kosong):") || "";
 
       editorEl.focus();
       BlogGenerator.Editor._restoreSelection();
 
-      var badge = '<span class="badge-disruptor">' + badges[index] + "</span> ";
-      document.execCommand("insertHTML", false, badge);
+      var cite = author
+        ? '<cite>— ' + BlogGenerator.Utils.escapeHtml(author) + "</cite>"
+        : "";
+
+      var html =
+        '<blockquote class="blockquote-box">' +
+        '<p class="blockquote-text">“' + BlogGenerator.Utils.escapeHtml(text) + '”</p>' +
+        cite +
+        "</blockquote><p><br></p>";
+
+      document.execCommand("insertHTML", false, html);
       BlogGenerator.Editor._saveSelection();
     },
 
@@ -243,22 +360,46 @@
 
     /**
      * Save current selection for later restoration.
+     * Preserves anchor/focus to support right-to-left selections.
      */
     _saveSelection: function () {
       var sel = window.getSelection();
       if (sel.rangeCount > 0) {
-        savedSelection = sel.getRangeAt(0);
+        var range = sel.getRangeAt(0);
+        /* Only save if selection is inside the editor */
+        if (editorEl.contains(range.commonAncestorContainer)) {
+          savedSelection = range.cloneRange();
+          savedAnchorNode = sel.anchorNode;
+          savedAnchorOffset = sel.anchorOffset;
+          savedFocusNode = sel.focusNode;
+          savedFocusOffset = sel.focusOffset;
+        }
       }
     },
 
     /**
      * Restore previously saved selection.
+     * Restores anchor/focus to preserve selection direction (LTR vs RTL).
      */
     _restoreSelection: function () {
       if (savedSelection) {
         var sel = window.getSelection();
         sel.removeAllRanges();
-        sel.addRange(savedSelection);
+
+        /* Try to restore with correct direction (anchor → focus) */
+        if (savedAnchorNode && savedFocusNode &&
+            editorEl.contains(savedAnchorNode) &&
+            editorEl.contains(savedFocusNode)) {
+          try {
+            sel.collapse(savedAnchorNode, savedAnchorOffset);
+            sel.extend(savedFocusNode, savedFocusOffset);
+          } catch (e) {
+            /* Fallback: just add the range */
+            sel.addRange(savedSelection);
+          }
+        } else {
+          sel.addRange(savedSelection);
+        }
       }
     },
 
