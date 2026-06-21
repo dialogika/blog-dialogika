@@ -212,6 +212,15 @@
         overflow: hidden;
         text-overflow: ellipsis;
       }
+      .editor-content a {
+        color: #1a3266;
+        text-decoration: underline;
+        font-weight: 600;
+      }
+      .editor-content a.internal-link {
+        border-bottom: 2px solid #f0a500;
+        padding-bottom: 1px;
+      }
 
       /* ---- Action bar ---- */
       .action-bar {
@@ -288,40 +297,19 @@
             <h5><i class="bi bi-search"></i> SEO Metadata</h5>
             <div class="row g-3">
               <div class="col-12">
-                <label class="form-label" for="field-title"
-                  >Judul Artikel *</label
-                >
+                <label class="form-label" for="field-title">
+                  Judul Artikel * <span id="title-valid" style="font-size:12px;margin-left:6px"></span>
+                </label>
                 <input
                   type="text"
                   class="form-control"
                   id="field-title"
-                  placeholder="Contoh: Cara Membuat Standup Comedy Menarik"
+                  placeholder="Contoh: Cara Membuat Standup Comedy - Tips Menarik Penonton"
                   required
                 />
-              </div>
-              <div class="col-md-6">
-                <label class="form-label" for="field-slug">Slug URL</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="field-slug"
-                  placeholder="auto-generate dari judul"
-                />
                 <div class="form-text">
-                  Kosongkan untuk auto-generate dari judul.
+                  Format: <strong>Keyword, CTA - Theory</strong> (harus mengandung strip "-")
                 </div>
-              </div>
-              <div class="col-md-6">
-                <label class="form-label" for="field-canonical"
-                  >Canonical URL</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="field-canonical"
-                  placeholder="auto-generate dari slug"
-                />
-                <div class="form-text">Kosongkan untuk auto-generate.</div>
               </div>
               <div class="col-12">
                 <label class="form-label" for="field-meta-desc"
@@ -331,9 +319,12 @@
                   class="form-control"
                   id="field-meta-desc"
                   rows="2"
-                  placeholder="Deskripsi singkat untuk SEO (maks 200 karakter)"
-                  maxlength="200"
+                  placeholder="Deskripsi ideal 200 karakter, maksimum 300 karakter"
+                  maxlength="300"
                 ></textarea>
+                <div class="form-text text-end">
+                  <span id="meta-desc-count">0</span>/300 karakter
+                </div>
               </div>
               <div class="col-12">
                 <label class="form-label" for="field-meta-keywords"
@@ -415,7 +406,7 @@
               </div>
               <div class="col-md-6">
                 <label class="form-label" for="field-featured-image"
-                  >Featured Image URL</label
+                  >Thumbnail Image URL</label
                 >
                 <input
                   type="url"
@@ -423,22 +414,29 @@
                   id="field-featured-image"
                   placeholder="https://images.unsplash.com/..."
                 />
-              </div>
-              <div class="col-12">
-                <label class="form-label" for="field-featured-image-alt"
-                  >Featured Image Alt Text</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="field-featured-image-alt"
-                  placeholder="Deskripsi gambar untuk accessibility"
-                />
+                <div class="form-text">Alt text otomatis mengikuti judul artikel.</div>
               </div>
             </div>
           </div>
 
-          <!-- ========== SECTION 4: Article Editor ========== -->
+          <!-- ========== SECTION 4: Cheatsheet ========== -->
+          <div class="section-card">
+            <h5><i class="bi bi-file-earmark-pdf"></i> Cheatsheet</h5>
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label" for="field-cheatsheet-pdf">PDF Cheatsheet URL</label>
+                <input
+                  type="url"
+                  class="form-control"
+                  id="field-cheatsheet-pdf"
+                  placeholder="https://drive.google.com/..."
+                />
+                <div class="form-text">Link PDF yang bisa didownload pengunjung.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ========== SECTION 5: Article Editor ========== -->
           <div class="section-card">
             <h5><i class="bi bi-pencil-square"></i> Konten Artikel</h5>
             <div id="editor-toolbar" class="editor-toolbar"></div>
@@ -495,6 +493,18 @@
               type="button"
             >
               <i class="bi bi-plus-lg"></i> Tambah FAQ
+            </button>
+          </div>
+
+          <!-- ========== SECTION 7: Sources (External Links) ========== -->
+          <div class="section-card" id="sources-manager">
+            <h5><i class="bi bi-link-45deg"></i> Sources</h5>
+            <div class="sources-list mb-3"></div>
+            <button
+              class="btn btn-sm btn-outline-primary source-add-btn"
+              type="button"
+            >
+              <i class="bi bi-plus-lg"></i> Tambah Source
             </button>
           </div>
         </div>
@@ -578,6 +588,7 @@
     <script src="js/tag-manager.js"></script>
     <script src="js/faq-manager.js"></script>
     <script src="js/takeaways-manager.js"></script>
+    <script src="js/sources-manager.js"></script>
     <script src="js/editor.js"></script>
     <script src="js/schema-generator.js"></script>
     <script src="js/content-renderer.js"></script>

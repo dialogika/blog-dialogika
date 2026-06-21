@@ -3,7 +3,7 @@
  * ==========================================================
  * Custom WYSIWYG editor with toolbar for blog article composition.
  * Supports headings, bold, italic, underline, lists, blockquote,
- * highlight, badge, image, internal link, external link.
+ * highlight, badge, image, internal link.
  */
 (function () {
   "use strict";
@@ -58,7 +58,6 @@
         '<div class="editor-toolbar-group">' +
         '  <button type="button" class="editor-btn" data-action="image" title="Image"><i class="bi bi-image"></i></button>' +
         '  <button type="button" class="editor-btn" data-action="internalLink" title="Internal Link"><i class="bi bi-link-45deg"></i> Internal</button>' +
-        '  <button type="button" class="editor-btn" data-action="externalLink" title="External Link"><i class="bi bi-box-arrow-up-right"></i> External</button>' +
         "</div>";
     },
 
@@ -176,9 +175,6 @@
           break;
         case "internalLink":
           BlogGenerator.Editor._showLinkModal("internal");
-          break;
-        case "externalLink":
-          BlogGenerator.Editor._showLinkModal("external");
           break;
       }
     },
@@ -305,7 +301,9 @@
     _showImageModal: function () {
       var url = prompt("Masukkan URL gambar:");
       if (!url) return;
-      var alt = prompt("Masukkan alt text gambar:", "") || "";
+      /* Alt text auto-follows the article title */
+      var titleEl = document.getElementById("field-title");
+      var alt = (titleEl && titleEl.value.trim()) ? titleEl.value.trim() : "";
 
       editorEl.focus();
       BlogGenerator.Editor._restoreSelection();
@@ -321,7 +319,7 @@
     },
 
     /**
-     * Show link modal (internal or external).
+     * Show internal link modal.
      */
     _showLinkModal: function (type) {
       BlogGenerator.Editor._saveSelection();
@@ -329,31 +327,16 @@
       var selection = window.getSelection();
       var selectedText = selection.toString() || "";
 
-      var url, text;
-      if (type === "internal") {
-        url = prompt("Masukkan URL internal (contoh: /blog/slug-artikel):");
-        if (!url) return;
-        text = prompt("Teks link:", selectedText) || selectedText;
+      var url = prompt("Masukkan URL internal (contoh: /blog/slug-artikel):");
+      if (!url) return;
+      var text = prompt("Teks link:", selectedText) || selectedText;
 
-        editorEl.focus();
-        BlogGenerator.Editor._restoreSelection();
+      editorEl.focus();
+      BlogGenerator.Editor._restoreSelection();
 
-        var html = '<a href="' + BlogGenerator.Utils.escapeHtml(url) + '">' +
-          BlogGenerator.Utils.escapeHtml(text) + "</a>";
-        document.execCommand("insertHTML", false, html);
-      } else {
-        url = prompt("Masukkan URL external (https://...):");
-        if (!url) return;
-        text = prompt("Teks link:", selectedText) || selectedText;
-
-        editorEl.focus();
-        BlogGenerator.Editor._restoreSelection();
-
-        var html2 = '<a href="' + BlogGenerator.Utils.escapeHtml(url) +
-          '" target="_blank" rel="noopener noreferrer">' +
-          BlogGenerator.Utils.escapeHtml(text) + "</a>";
-        document.execCommand("insertHTML", false, html2);
-      }
+      var html = '<a href="' + BlogGenerator.Utils.escapeHtml(url) + '" class="internal-link">' +
+        BlogGenerator.Utils.escapeHtml(text) + "</a>";
+      document.execCommand("insertHTML", false, html);
 
       BlogGenerator.Editor._saveSelection();
     },

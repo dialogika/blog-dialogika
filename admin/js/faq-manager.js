@@ -31,19 +31,24 @@
     },
 
     _add: function () {
+      /* Sync BEFORE pushing to preserve existing typed data */
+      BlogGenerator.FaqManager._syncFromDOM();
       faqs.push({ question: "", answer: "" });
-      BlogGenerator.FaqManager._render();
+      BlogGenerator.FaqManager._renderDOM();
     },
 
     _remove: function (index) {
+      /* Sync BEFORE splicing so we don't lose data */
+      BlogGenerator.FaqManager._syncFromDOM();
       faqs.splice(index, 1);
-      BlogGenerator.FaqManager._render();
+      BlogGenerator.FaqManager._renderDOM();
     },
 
     _syncFromDOM: function () {
       if (!listEl) return;
       var items = listEl.querySelectorAll(".faq-item-card");
       items.forEach(function (card, i) {
+        if (i >= faqs.length) return;
         var q = card.querySelector(".faq-question-input");
         var a = card.querySelector(".faq-answer-input");
         if (q) faqs[i].question = q.value;
@@ -51,15 +56,16 @@
       });
     },
 
-    _render: function () {
+    /**
+     * Render DOM cards from the faqs array WITHOUT syncing first.
+     * Used by _add() and _remove() after they have already synced.
+     */
+    _renderDOM: function () {
       if (!listEl) return;
-      /* Sync before re-render to avoid losing typed content */
-      BlogGenerator.FaqManager._syncFromDOM();
-
       listEl.innerHTML = "";
       faqs.forEach(function (faq, i) {
         var card = document.createElement("div");
-        card.className = "card mb-3";
+        card.className = "card mb-3 faq-item-card";
         card.innerHTML =
           '<div class="card-header d-flex justify-content-between align-items-center">' +
           "  <strong>FAQ #" + (i + 1) + "</strong>" +
@@ -89,6 +95,13 @@
 
         listEl.appendChild(card);
       });
+    },
+
+    _render: function () {
+      if (!listEl) return;
+      /* Sync before re-render to avoid losing typed content */
+      BlogGenerator.FaqManager._syncFromDOM();
+      BlogGenerator.FaqManager._renderDOM();
     },
 
     /**

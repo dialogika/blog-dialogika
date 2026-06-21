@@ -31,27 +31,46 @@
     },
 
     _add: function () {
+      /* Sync BEFORE pushing to preserve existing typed data */
+      BlogGenerator.TakeawaysManager._syncFromDOM();
       items.push("");
-      BlogGenerator.TakeawaysManager._render();
+      BlogGenerator.TakeawaysManager._renderDOM();
     },
 
     _remove: function (index) {
+      /* Sync BEFORE splicing so we don't lose data */
+      BlogGenerator.TakeawaysManager._syncFromDOM();
       items.splice(index, 1);
-      BlogGenerator.TakeawaysManager._render();
+      BlogGenerator.TakeawaysManager._renderDOM();
+    },
+
+    /**
+     * Insert a new empty item at a specific position (after Enter key).
+     */
+    _insertAt: function (index) {
+      BlogGenerator.TakeawaysManager._syncFromDOM();
+      items.splice(index + 1, 0, "");
+      BlogGenerator.TakeawaysManager._renderDOM();
+      /* Focus the newly inserted input */
+      if (listEl) {
+        var inputs = listEl.querySelectorAll(".takeaway-input");
+        if (inputs[index + 1]) inputs[index + 1].focus();
+      }
     },
 
     _syncFromDOM: function () {
       if (!listEl) return;
       var inputs = listEl.querySelectorAll(".takeaway-input");
       inputs.forEach(function (inp, i) {
-        items[i] = inp.value;
+        if (i < items.length) items[i] = inp.value;
       });
     },
 
-    _render: function () {
+    /**
+     * Render DOM from items array WITHOUT syncing first.
+     */
+    _renderDOM: function () {
       if (!listEl) return;
-      BlogGenerator.TakeawaysManager._syncFromDOM();
-
       listEl.innerHTML = "";
       items.forEach(function (text, i) {
         var row = document.createElement("div");
@@ -70,8 +89,23 @@
           BlogGenerator.TakeawaysManager._remove(i);
         });
 
+        /* Enter key: insert new takeaway below current one */
+        var inp = row.querySelector(".takeaway-input");
+        inp.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            BlogGenerator.TakeawaysManager._insertAt(i);
+          }
+        });
+
         listEl.appendChild(row);
       });
+    },
+
+    _render: function () {
+      if (!listEl) return;
+      BlogGenerator.TakeawaysManager._syncFromDOM();
+      BlogGenerator.TakeawaysManager._renderDOM();
     },
 
     /**

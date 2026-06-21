@@ -68,6 +68,34 @@
     },
 
     /**
+     * Render sources list as HTML.
+     * @param {Array} sources — [{ url, title, thumbnail }]
+     * @returns {string} — Complete sources section HTML
+     */
+    renderSources: function (sources) {
+      if (!sources || sources.length === 0) return "";
+
+      var html = '<div class="sources-area section-space--pt_60">\n';
+      html += '                      <div class="section-title mb-30"><h3 class="title">Sources</h3></div>\n';
+      html += '                      <div class="sources-list-wrap">\n';
+
+      sources.forEach(function (src) {
+        var title = BlogGenerator.Utils.escapeHtml(src.title || src.url);
+        var url = BlogGenerator.Utils.escapeHtml(src.url);
+        html += '                        <a href="' + url + '" target="_blank" rel="noopener noreferrer" class="source-card-item">\n';
+        if (src.thumbnail) {
+          html += '                          <div class="source-thumb"><img src="' + BlogGenerator.Utils.escapeHtml(src.thumbnail) + '" alt="' + title + '" loading="lazy" /></div>\n';
+        }
+        html += '                          <div class="source-info"><h6>' + title + '</h6><span>' + url + '</span></div>\n';
+        html += '                        </a>\n';
+      });
+
+      html += '                      </div>\n';
+      html += '                    </div>';
+      return html;
+    },
+
+    /**
      * Render static social share HTML.
      * @returns {string}
      */
@@ -75,10 +103,11 @@
       var s = BlogGenerator.Config.social;
       return (
         '<ul class="social-share-area">\n' +
-        '                          <li><a href="' + s.twitter + '" target="_blank" rel="noopener noreferrer"><i class="icofont-twitter"></i></a></li>\n' +
-        '                          <li><a href="' + s.facebook + '" target="_blank" rel="noopener noreferrer"><i class="icofont-facebook"></i></a></li>\n' +
         '                          <li><a href="' + s.instagram + '" target="_blank" rel="noopener noreferrer"><i class="icofont-instagram"></i></a></li>\n' +
+        '                          <li><a href="' + s.tiktok + '" target="_blank" rel="noopener noreferrer"><i class="icofont-tiktok"></i></a></li>\n' +
+        '                          <li><a href="' + s.youtube + '" target="_blank" rel="noopener noreferrer"><i class="icofont-youtube-play"></i></a></li>\n' +
         '                          <li><a href="' + s.linkedin + '" target="_blank" rel="noopener noreferrer"><i class="icofont-linkedin"></i></a></li>\n' +
+        '                          <li><a href="' + s.facebook + '" target="_blank" rel="noopener noreferrer"><i class="icofont-facebook"></i></a></li>\n' +
         "                        </ul>"
       );
     },

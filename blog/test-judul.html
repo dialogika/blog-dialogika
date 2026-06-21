@@ -7,33 +7,33 @@
     <!-- =============================================
          SEO META TAGS
          ============================================= -->
-    <title>{{PAGE_TITLE}} | Dialogika Blog</title>
-    <meta name="description" content="{{META_DESCRIPTION}}" />
-    <meta name="keywords" content="{{META_KEYWORDS}}" />
+    <title>test - judul | Dialogika Blog</title>
+    <meta name="description" content="test meta desc" />
+    <meta name="keywords" content="test-key, test-key2" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 
     <!-- Canonical -->
-    <link rel="canonical" href="{{CANONICAL_URL}}" />
+    <link rel="canonical" href="https://dialogika.co/blog/test-judul" />
 
     <!-- Open Graph -->
     <meta property="og:locale" content="id_ID" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="{{OG_TITLE}}" />
-    <meta property="og:description" content="{{OG_DESCRIPTION}}" />
-    <meta property="og:url" content="{{OG_URL}}" />
+    <meta property="og:title" content="test - judul" />
+    <meta property="og:description" content="test meta desc" />
+    <meta property="og:url" content="https://dialogika.co/blog/test-judul" />
     <meta property="og:site_name" content="Dialogika Blog" />
-    <meta property="og:image" content="{{OG_IMAGE}}" />
+    <meta property="og:image" content="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2FxZFPMoVHZ-W8b8Z2eTjYJs2Ge5UwcxIqTeBgdmSY1ZUspCOi15aKDPI&amp;s=10" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="article:published_time" content="{{PUBLISHED_DATE_ISO}}" />
-    <meta property="article:modified_time" content="{{MODIFIED_DATE_ISO}}" />
+    <meta property="article:published_time" content="2026-06-22T08:00:00+07:00" />
+    <meta property="article:modified_time" content="2026-06-22T08:00:00+07:00" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="{{TWITTER_TITLE}}" />
-    <meta name="twitter:description" content="{{TWITTER_DESCRIPTION}}" />
-    <meta name="twitter:image" content="{{TWITTER_IMAGE}}" />
+    <meta name="twitter:title" content="test - judul" />
+    <meta name="twitter:description" content="test meta desc" />
+    <meta name="twitter:image" content="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2FxZFPMoVHZ-W8b8Z2eTjYJs2Ge5UwcxIqTeBgdmSY1ZUspCOi15aKDPI&amp;s=10" />
 
     <!-- Favicon -->
     <link rel="icon" href="../assets/images/favicon.png" />
@@ -42,13 +42,83 @@
         SCHEMA JSON-LD — Structured Data for Google
     ============================================= -->
     <script type="application/ld+json">
-      {{ARTICLE_JSON_LD}}
+      {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "test - judul",
+  "description": "test meta desc",
+  "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2FxZFPMoVHZ-W8b8Z2eTjYJs2Ge5UwcxIqTeBgdmSY1ZUspCOi15aKDPI&s=10",
+  "author": {
+    "@type": "Organization",
+    "name": "Dialogika",
+    "url": "https://dialogika.co"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Dialogika",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://dialogika.co/assets/images/dialogikalogo.png"
+    }
+  },
+  "datePublished": "2026-06-22T08:00:00+07:00",
+  "dateModified": "2026-06-22T08:00:00+07:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://dialogika.co/blog/test-judul"
+  }
+}
     </script>
 
-    {{FAQ_JSON_LD_BLOCK}}
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "q 1",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": " weew "
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "q qw",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "122"
+      }
+    }
+  ]
+}
+    </script>
 
     <script type="application/ld+json">
-      {{BREADCRUMB_JSON_LD}}
+      {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://dialogika.co"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Mental Health",
+      "item": "https://dialogika.co/kategori/mental-health"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "test - judul"
+    }
+  ]
+}
     </script>
 
     <!-- CSS Libraries -->
@@ -93,9 +163,21 @@
       .source-card-item .source-thumb img{width:100%;height:100%;object-fit:cover}
       .source-card-item .source-info h6{font-size:14px;font-weight:700;color:#1a3266;margin:0 0 2px}
       .source-card-item .source-info span{font-size:12px;color:#888;word-break:break-all}
-      .post-tags-area{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
-      .tags-color{display:inline-block;background:#0b2b6a;color:#fff;border-radius:15px;transition:all .2s ease;padding:6px 18px;text-decoration:none;font-size:13px}
+      .stay-in-touch-box{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+      .single-touch-col{flex:0 0 auto}
+      .single-touch{display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;color:#fff;text-decoration:none;font-size:20px;transition:transform .2s ease,box-shadow .2s ease}
+      .single-touch:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.15);color:#fff}
+      .single-touch.instagram{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
+      .single-touch.tiktok{background:#000}
+      .single-touch.youtube{background:#ff0000}
+      .single-touch.linkedin{background:#0077b5}
+      .single-touch.facebook{background:#1877f2}
+      .single-touch.whatsapp{background:#25d366}
+      .post-tags-area{display:flex;flex-wrap:wrap;gap:10px}
+      .tags-color{background:#0b2b6a;color:#fff;border-radius:15px;transition:all .2s ease;padding:6px 18px}
       .tags-color:hover{background:#0b2b6a;color:#fff}
+      .social-share-area{display:flex;flex-wrap:wrap;gap:12px}
+      .social-share-area a{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;text-decoration:none}
       .key-takeaways-section{background:linear-gradient(135deg,#f0f4ff 0%,#e8f0fe 100%);border-left:5px solid #1a3266;border-radius:0 12px 12px 0;padding:28px 30px;margin:40px 0}
       .key-takeaways-section .kt-title{font-size:16px;font-weight:700;color:#1a3266;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
       .key-takeaways-section ul{list-style:none;padding:0;margin:0}
@@ -136,12 +218,9 @@
       .tgAbout-info .intro b{font-weight:700;color:#fff;letter-spacing:-.8px}
       .tgAbout-info .designation{display:block;font-size:14px;text-transform:uppercase;font-weight:700;color:#f9c72e}
       .tgAbout-social{display:flex;align-items:center;justify-content:center;margin:22px 0 0;gap:10px}
-      .tgAbout-social a{display:flex;align-items:center;justify-content:center;width:46px;height:46px;flex:0 0 auto;border-radius:50%;background:#fff;font-size:15px;color:#0b2b6a;text-decoration:none;transition:background-color .3s ease,transform .3s ease;box-shadow:0px 10px 10px -6px rgba(114,4,207,.75) inset;-webkit-box-shadow:0px 10px 10px -6px rgba(114,4,207,.75) inset;-moz-box-shadow:0px 10px 10px -6px rgba(114,4,207,.75) inset}
-      .tgAbout-social a:hover{background:#f9c72e;color:#0b2b6a;box-shadow:0px -13px 11px -6px rgba(114,4,207,.75) inset;-webkit-box-shadow:0px -13px 11px -6px rgba(114,4,207,.75) inset;-moz-box-shadow:0px -13px 11px -6px rgba(114,4,207,.75) inset}
+      .tgAbout-social a{display:flex;align-items:center;justify-content:center;width:46px;height:46px;flex:0 0 auto;border-radius:50%;background:#fff;font-size:15px;color:#0b2b6a;text-decoration:none;transition:background-color .3s ease,transform .3s ease}
+      .tgAbout-social a:hover{background:#f9c72e;color:#0b2b6a}
       .tgAbout-social i{font-size:20px}
-      .social-share-area{display:flex;flex-wrap:wrap;gap:12px}
-      .social-share-area a{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;text-decoration:none}
-      .social-share-area a i:hover{color:white}
       @media(max-width:768px){.article-h1{font-size:22px}.engagement-bar{flex-wrap:wrap;gap:10px}.key-takeaways-section{padding:20px 18px}.h2-image-container img.h2-section-img{height:150px}.h2-image-container::after{top:-40px;width:100px;height:120px}.watermark-container .whatsapp-watermark{right:10px;bottom:10px;padding:6px 10px 6px 6px;gap:6px}.watermark-container .whatsapp-watermark .wa-icon-wrap{width:24px;height:24px;flex:0 0 24px}.watermark-container .whatsapp-watermark .wa-icon-wrap img{width:15px!important;height:15px!important}.watermark-container .whatsapp-watermark .wa-number{font-size:11px}}
       @media only screen and(max-width:991px){.header-inline-search__input{width:140px}.header-inline-search{margin-left:7px}}
       @media only screen and(max-width:767px){.header-inline-search{margin-left:0}.header-inline-search__input{width:160px}}
@@ -505,7 +584,7 @@
             <div class="breadcrumb_box text-center">
               <ul class="breadcrumb-list">
                 <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">{{BREADCRUMB_CATEGORY}}</a></li>
+                <li class="breadcrumb-item"><a href="#">Mental Health</a></li>
               </ul>
             </div>
           </div>
@@ -526,8 +605,8 @@
                   <!-- FEATURED IMAGE -->
                   <div class="watermark-container">
                     <img
-                      src="{{FEATURED_IMAGE_URL}}"
-                      alt="{{FEATURED_IMAGE_ALT}}"
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2FxZFPMoVHZ-W8b8Z2eTjYJs2Ge5UwcxIqTeBgdmSY1ZUspCOi15aKDPI&amp;s=10"
+                      alt="test - judul"
                       width="700"
                       height="450"
                       loading="eager"
@@ -546,10 +625,10 @@
                     <div class="blog-details-meta-box">
                       <div class="post-meta-left-side mb-2">
                         <div class="trending-blog-post-category">
-                          <a href="#">{{CATEGORY}}</a>
+                          <a href="#">Mental Health</a>
                         </div>
                         <div class="following-blog-post-author">
-                          By <a href="#">{{AUTHOR}}</a>
+                          By <a href="#">Dialogika</a>
                         </div>
                       </div>
                       <div class="post-mid-side mb-2">
@@ -557,7 +636,7 @@
                           <span class="post-date">
                             <i class="icofont-ui-calendar"></i>
                             <a href="#">
-                              <time datetime="{{PUBLISHED_DATE_ISO}}">{{PUBLISHED_DATE_DISPLAY}}</time>
+                              <time datetime="2026-06-22T08:00:00+07:00">22 Juni 2026</time>
                             </a>
                           </span>
                         </span>
@@ -566,15 +645,24 @@
                     </div>
 
                     <!-- H1 JUDUL -->
-                    <h1 class="article-h1">{{ARTICLE_H1}}</h1>
+                    <h1 class="article-h1">test - judul</h1>
 
                     <!-- BODY ARTIKEL -->
                     <div class="post-details-text" id="article-body">
-                      {{ARTICLE_CONTENT}}
+                      <span class="badge-disruptor">test</span> konten<span class="highlight"> artikel&nbsp;&nbsp;</span><div><p><br></p><p><a href="https://www.dialogika.co/" class="internal-link">link internal</a></p></div>
 
                       <!-- Tags -->
-                      <div class="post-tags-area">
-                        {{TAGS_HTML}}
+                      <div class="blog-details-tag-and-share-area">
+                        <div class="post-tags-area">
+                          
+                        </div>
+                        <ul class="social-share-area">
+                          <li><a href="https://www.instagram.com/dialogika.co" target="_blank" rel="noopener noreferrer"><i class="icofont-instagram"></i></a></li>
+                          <li><a href="https://www.tiktok.com/@dialogika_co" target="_blank" rel="noopener noreferrer"><i class="icofont-tiktok"></i></a></li>
+                          <li><a href="https://youtube.com/@dialogika_co" target="_blank" rel="noopener noreferrer"><i class="icofont-youtube-play"></i></a></li>
+                          <li><a href="https://www.linkedin.com/company/dialogika" target="_blank" rel="noopener noreferrer"><i class="icofont-linkedin"></i></a></li>
+                          <li><a href="https://www.facebook.com/dialogika.co" target="_blank" rel="noopener noreferrer"><i class="icofont-facebook"></i></a></li>
+                        </ul>
                       </div>
                     </div>
                     <!-- END article-body -->
@@ -595,15 +683,44 @@
                     <div class="key-takeaways-section">
                       <div class="kt-title">Key Takeaways</div>
                       <ul>
-                        {{KEY_TAKEAWAYS_HTML}}
+                        
                       </ul>
                     </div>
 
                     <!-- FAQ -->
-                    {{FAQ_HTML}}
+                    <div class="faq-section">
+                      <div class="faq-title">
+                        Pertanyaan yang Sering Diajukan
+                      </div>
+
+                      <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                          <span>q 1</span>
+                          <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                          <p>
+                             weew 
+                          </p>
+                        </div>
+                      </div>
+
+                      <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                          <span>q qw</span>
+                          <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                          <p>
+                            122
+                          </p>
+                        </div>
+                      </div>
+
+                    </div>
 
                     <!-- SOURCES -->
-                    {{SOURCES_HTML}}
+                    
 
                     <!-- LATEST POST -->
                     <div class="related-post-area section-space--pt_60" style="margin-bottom:120px">
@@ -659,11 +776,13 @@
                     <span class="designation">Unleash Your Potential</span>
                   </div>
                   <div class="tgAbout-social">
-                    <a href="https://twitter.com/dialogika_co" target="_blank" rel="noopener noreferrer"><i class="bi bi-twitter"></i></a>
-                    <a href="https://facebook.com/dialogika.co" target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook"></i></a>
-                    <a href="https://instagram.com/dialogika.co" target="_blank" rel="noopener noreferrer"><i class="bi bi-instagram"></i></a>
+                    <a href="https://www.instagram.com/dialogika.co" target="_blank" rel="noopener noreferrer"><i class="bi bi-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@dialogika_co" target="_blank" rel="noopener noreferrer"><i class="bi bi-tiktok"></i></a>
                     <a href="https://youtube.com/@dialogika_co" target="_blank" rel="noopener noreferrer"><i class="bi bi-youtube"></i></a>
-                  </div> 
+                    <a href="https://www.linkedin.com/company/dialogika" target="_blank" rel="noopener noreferrer"><i class="bi bi-linkedin"></i></a>
+                    <a href="https://www.facebook.com/dialogika.co" target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook"></i></a>
+                    <a href="https://wa.me/+6285162992597" target="_blank" rel="noopener noreferrer"><i class="bi bi-whatsapp"></i></a>
+                  </div>
                 </div>
 
                 <div class="blog-details-category-area mt-5">
@@ -688,17 +807,17 @@
                 <div class="stay-in-touch-area mt-5">
                   <div class="section-title"><h3>Stay In Touch</h3></div>
                   <div class="stay-in-touch-box">
-                    <div class="single-touch-col"><a href="https://www.instagram.com/dialogika.co" target="_blank" rel="noopener noreferrer" class="single-touch instagram"><div class="touch-socail-icon"><i class="icofont-instagram"></i></div></a></div>
-                    <div class="single-touch-col"><a href="https://www.tiktok.com/@dialogika.co" target="_blank" rel="noopener noreferrer" class="single-touch tiktok"><div class="touch-socail-icon"><i class="bi bi-tiktok"></i></div></a></div>
-                    <div class="single-touch-col"><a href="https://youtube.com/@dialogika_co" target="_blank" rel="noopener noreferrer" class="single-touch youtube"><div class="touch-socail-icon"><i class="icofont-youtube-play"></i></div></a></div>
-                    <div class="single-touch-col"><a href="https://www.linkedin.com/company/dialogika" target="_blank" rel="noopener noreferrer" class="single-touch linkedin"><div class="touch-socail-icon"><i class="icofont-linkedin"></i></div></a></div>
-                    <div class="single-touch-col"><a href="https://www.facebook.com/dialogika.co" target="_blank" rel="noopener noreferrer" class="single-touch facebook"><div class="touch-socail-icon"><i class="icofont-facebook"></i></div></a></div>
-                    <div class="single-touch-col"><a href="https://wa.me/+6285162992597" target="_blank" rel="noopener noreferrer" class="single-touch whatsapp"><div class="touch-socail-icon"><i class="bi bi-whatsapp"></i></div></a></div>
+                    <div class="single-touch-col"><a href="https://www.instagram.com/dialogika.co" target="_blank" rel="noopener noreferrer" class="single-touch instagram"><i class="icofont-instagram"></i></a></div>
+                    <div class="single-touch-col"><a href="https://www.tiktok.com/@dialogika_co" target="_blank" rel="noopener noreferrer" class="single-touch tiktok"><i class="icofont-tiktok"></i></a></div>
+                    <div class="single-touch-col"><a href="https://youtube.com/@dialogika_co" target="_blank" rel="noopener noreferrer" class="single-touch youtube"><i class="icofont-youtube-play"></i></a></div>
+                    <div class="single-touch-col"><a href="https://www.linkedin.com/company/dialogika" target="_blank" rel="noopener noreferrer" class="single-touch linkedin"><i class="icofont-linkedin"></i></a></div>
+                    <div class="single-touch-col"><a href="https://www.facebook.com/dialogika.co" target="_blank" rel="noopener noreferrer" class="single-touch facebook"><i class="icofont-facebook"></i></a></div>
+                    <div class="single-touch-col"><a href="https://wa.me/+6285162992597" target="_blank" rel="noopener noreferrer" class="single-touch whatsapp"><i class="icofont-whatsapp"></i></a></div>
                   </div>
                 </div>
 
                 <div class="following-add-banner mt-5">
-                  <a href="#"><img src="../assets/images/banners/home-following-banner.png" alt="" /></a>
+                  <a href="#"><img src="https://down-id.img.susercontent.com/file/454e84936618f1e2f5135ff5dba64908" alt="Poster" style="width:100%;border-radius:8px" /></a>
                 </div>
               </div>
               <!-- END Kolom Kanan -->
@@ -792,5 +911,43 @@
       function toggleFaq(btn){var a=btn.nextElementSibling,o=a.classList.contains("open");document.querySelectorAll(".faq-item").forEach(function(i){var fa=i.querySelector(".faq-answer"),fq=i.querySelector(".faq-question");if(fa&&fa.classList.contains("open"))fa.classList.remove("open");if(fq&&fq.classList.contains("open"))fq.classList.remove("open");if(fa)fa.style.maxHeight="0px"});if(!o){a.classList.add("open");btn.classList.add("open");a.style.maxHeight=a.scrollHeight+"px"}else{a.classList.remove("open");btn.classList.remove("open");a.style.maxHeight="0px"}}
       document.querySelectorAll(".watermark-container").forEach(function(el){el.addEventListener("contextmenu",function(e){e.preventDefault()})});
     </script>
-  </body>
+  <!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
 </html>

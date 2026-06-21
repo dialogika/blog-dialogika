@@ -13,6 +13,7 @@
   var TagManager = BlogGenerator.TagManager;
   var FaqManager = BlogGenerator.FaqManager;
   var TakeawaysManager = BlogGenerator.TakeawaysManager;
+  var SourcesManager = BlogGenerator.SourcesManager;
   var Schema = BlogGenerator.Schema;
   var ContentRenderer = BlogGenerator.ContentRenderer;
   var TemplateProcessor = BlogGenerator.TemplateProcessor;
@@ -25,10 +26,8 @@
    */
   function collectFormData() {
     var title = document.getElementById("field-title").value.trim();
-    var slug = document.getElementById("field-slug").value.trim();
     var metaDesc = document.getElementById("field-meta-desc").value.trim();
     var metaKeywords = document.getElementById("field-meta-keywords").value.trim();
-    var canonicalUrl = document.getElementById("field-canonical").value.trim();
     var ogTitle = document.getElementById("field-og-title").value.trim() || title;
     var ogDesc = document.getElementById("field-og-desc").value.trim() || metaDesc;
     var ogImage = document.getElementById("field-og-image").value.trim();
@@ -36,22 +35,21 @@
     var category = document.getElementById("field-category").value.trim();
     var publishedDate = document.getElementById("field-date").value;
     var featuredImageUrl = document.getElementById("field-featured-image").value.trim();
-    var featuredImageAlt = document.getElementById("field-featured-image-alt").value.trim() || title;
+    var cheatsheetPdf = document.getElementById("field-cheatsheet-pdf").value.trim();
 
     if (!title) {
       alert("Judul artikel wajib diisi!");
       return null;
     }
 
-    if (!slug) {
-      slug = Utils.slugify(title);
-      document.getElementById("field-slug").value = slug;
+    /* Title dash validation: must contain " - " */
+    if (title.indexOf(" - ") === -1) {
+      alert('Judul harus mengandung format "Keyword - Theory" (dengan strip -).\nContoh: Cara Membuat Standup Comedy - Tips Menarik Penonton');
+      return null;
     }
 
-    var baseUrl = Config.baseUrl;
-    if (!canonicalUrl) {
-      canonicalUrl = baseUrl + slug;
-    }
+    var slug = Utils.slugify(title);
+    var canonicalUrl = Config.baseUrl + slug;
 
     var publishedDateIso = Utils.toIsoDateTime(publishedDate);
     var publishedDateDisplay = Utils.formatDate(publishedDate);
@@ -60,6 +58,7 @@
     var tags = TagManager.getTags();
     var faqs = FaqManager.getFaqs();
     var takeaways = TakeawaysManager.getItems();
+    var sources = SourcesManager.getSources();
 
     var articleJsonLd = Schema.generateArticleSchema({
       title: title,
@@ -81,6 +80,7 @@
     var tagsHtml = ContentRenderer.renderTags(tags);
     var takeawaysHtml = ContentRenderer.renderTakeaways(takeaways);
     var faqHtml = ContentRenderer.renderFaq(faqs);
+    var sourcesHtml = ContentRenderer.renderSources(sources);
 
     return {
       PAGE_TITLE: Utils.escapeHtml(title),
@@ -100,7 +100,7 @@
       FAQ_JSON_LD_BLOCK: faqJsonLdBlock,
       BREADCRUMB_JSON_LD: breadcrumbJsonLd,
       FEATURED_IMAGE_URL: Utils.escapeHtml(featuredImageUrl),
-      FEATURED_IMAGE_ALT: Utils.escapeHtml(featuredImageAlt),
+      FEATURED_IMAGE_ALT: Utils.escapeHtml(title),
       CATEGORY: Utils.escapeHtml(category),
       AUTHOR: Utils.escapeHtml(author),
       PUBLISHED_DATE_DISPLAY: publishedDateDisplay,
@@ -109,6 +109,8 @@
       TAGS_HTML: tagsHtml,
       KEY_TAKEAWAYS_HTML: takeawaysHtml,
       FAQ_HTML: faqHtml,
+      SOURCES_HTML: sourcesHtml,
+      CHEATSHEET_URL: Utils.escapeHtml(cheatsheetPdf),
       BREADCRUMB_CATEGORY: Utils.escapeHtml(category),
       SLUG: slug,
     };
@@ -139,6 +141,7 @@
     TagManager.init("tag-manager");
     FaqManager.init("faq-manager");
     TakeawaysManager.init("takeaways-manager");
+    SourcesManager.init("sources-manager");
 
     /* Populate category dropdown */
     var categorySelect = document.getElementById("field-category");
@@ -151,32 +154,33 @@
       });
     }
 
-    /* Auto-generate slug from title */
+    /* Title validation indicator */
     var titleInput = document.getElementById("field-title");
-    var slugInput = document.getElementById("field-slug");
-    if (titleInput && slugInput) {
-      titleInput.addEventListener("blur", function () {
-        if (!slugInput.value.trim()) {
-          slugInput.value = Utils.slugify(titleInput.value);
-        }
-      });
+    var titleValidEl = document.getElementById("title-valid");
+    if (titleInput) {
       titleInput.addEventListener("input", function () {
         /* Auto-fill OG title if empty */
         var ogTitle = document.getElementById("field-og-title");
         if (ogTitle && !ogTitle.value.trim()) {
           ogTitle.placeholder = titleInput.value || "OG Title (auto from title)";
         }
+        /* Title dash validation indicator */
+        if (titleValidEl) {
+          if (titleInput.value.indexOf(" - ") !== -1) {
+            titleValidEl.innerHTML = '<span style="color:#198754">&#10003; Valid</span>';
+          } else {
+            titleValidEl.innerHTML = '<span style="color:#dc3545">&#10007; Butuh strip (-)</span>';
+          }
+        }
       });
     }
 
-    /* Auto-fill canonical URL from slug */
-    if (slugInput) {
-      slugInput.addEventListener("blur", function () {
-        var canonicalInput = document.getElementById("field-canonical");
-        if (canonicalInput && !canonicalInput.value.trim()) {
-          canonicalInput.placeholder =
-            Config.baseUrl + slugInput.value;
-        }
+    /* Meta description character counter */
+    var metaDescInput = document.getElementById("field-meta-desc");
+    var metaDescCount = document.getElementById("meta-desc-count");
+    if (metaDescInput && metaDescCount) {
+      metaDescInput.addEventListener("input", function () {
+        metaDescCount.textContent = metaDescInput.value.length;
       });
     }
 

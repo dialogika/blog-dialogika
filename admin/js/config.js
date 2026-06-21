@@ -15,25 +15,21 @@
     /* Badge types available in the editor toolbar */
     badges: ["Kritis", "Waspada"],
 
-    /* Default categories shown in the category dropdown */
+    /* Default categories shown in the category dropdown (Dialogika's 4 categories) */
     categories: [
       "Public Speaking",
-      "Stand Up Comedy",
+      "Self Development",
+      "Mental Health",
       "Communication",
-      "Self-Development",
-      "Business",
-      "Technology",
-      "Travel",
-      "Food",
     ],
 
     /* Social media links used in the generated template (static) */
     social: {
-      twitter: "https://x.com/dialogika_co",
-      facebook: "https://www.facebook.com/dialogika.co",
       instagram: "https://www.instagram.com/dialogika.co",
-      linkedin: "https://www.linkedin.com/company/dialogika",
+      tiktok: "https://www.tiktok.com/@dialogika_co",
       youtube: "https://youtube.com/@dialogika_co",
+      linkedin: "https://www.linkedin.com/company/dialogika",
+      facebook: "https://www.facebook.com/dialogika.co",
       whatsapp: "https://wa.me/+6285162992597",
     },
 

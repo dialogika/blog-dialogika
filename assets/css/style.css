@@ -4466,6 +4466,15 @@ input[type="checkbox"] {
 .single-touch.linkedin .touch-socail-icon {
   background: #007bb6;
 }
+.single-touch.instagram .touch-socail-icon {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+}
+.single-touch.tiktok .touch-socail-icon {
+  background: #000000;
+}
+.single-touch.whatsapp .touch-socail-icon {
+  background: #25d366;
+}
 .single-touch p {
   color: #000000;
   font-size: 12px;
@@ -4510,6 +4519,27 @@ input[type="checkbox"] {
 }
 .single-touch:hover.linkedin .touch-socail-icon {
   color: #007bb6;
+  background: #ffffff;
+}
+.single-touch:hover.instagram {
+  background: #dc2743;
+}
+.single-touch:hover.instagram .touch-socail-icon {
+  color: #dc2743;
+  background: #ffffff;
+}
+.single-touch:hover.tiktok {
+  background: #000000;
+}
+.single-touch:hover.tiktok .touch-socail-icon {
+  color: #000000;
+  background: #ffffff;
+}
+.single-touch:hover.whatsapp {
+  background: #25d366;
+}
+.single-touch:hover.whatsapp .touch-socail-icon {
+  color: #25d366;
   background: #ffffff;
 }
 .single-touch:hover p {
