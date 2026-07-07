@@ -51,7 +51,25 @@ function extractMetadata(filePath) {
 
   const image = (content.match(/<img[^>]+src="([^"]+)"/) || [])[1] || '';
   const is_wrapped = content.includes('dialogika-header');
-  return { content, title, date, keywords, excerpt, image, is_wrapped };
+  const category = classifyArticle(title, keywords);
+  return { content, title, date, keywords, excerpt, image, is_wrapped, category };
+}
+
+function classifyArticle(title, keywords) {
+  const text = [title, keywords].join(" ").toLowerCase();
+  function score(patterns) {
+    let s = 0;
+    for (const p of patterns) if (text.indexOf(p) !== -1) s++;
+    return s;
+  }
+  const scores = [
+    { n: "Communication", s: score(["komunikasi","interpersonal","obrolan","ngobrol","nyambung","basa-basi","small talk","konflik","relationship","miss komunikasi","komunikasi efektif","komunikasi asertif","komunikasi digital","cadel","gagap","membuka diri","emotional intelligence","parenting","distance parenting","menasihati anak","mengajar anak","guru hebat","relasi","komunikasi intrapersonal","peranan komunikasi","bicara tanpa drama","bercerita","sopan","kartini"]) },
+    { n: "Public Speaking", s: score(["public speaking","presentasi","mc ","master of ceremony","pembicara","pidato","tampil","panggung","demam panggung","berbicara di depan","bicara di depan","takut bicara","gugup saat","presentasi kerja","pembukaan pidato","moderator","storytelling","body language","voice tone","voice control","intonasi","artikulasi","membawakan acara","tips mc","lupa di tengah presentasi","improvisasi","pola presentasi","presentasi seminar","pitching","presentasi daring"]) },
+    { n: "Mental Health", s: score(["anxiety","overthinking","insecure","mental health","kesehatan mental","emosi","cemas","takut","grogi","stres","stress","self-esteem","rasa iri","validasi","krisis identitas","kelelahan digital","oversharing","mengelola emosi","mengatasi rasa gugup","bangun percaya diri","self-confidence","nge-blank"]) },
+    { n: "Self Development", s: score(["personal branding","karir","karier","branding diri","kepercayaan diri","self confidence","kepemimpinan","pemimpin","produktivitas","softskill","sukses","skill","masa depan anak","pengembangan diri","raih karir","fokus","time management","gen z","brand","selektif","skill komunikasi","dunia kerja","kerja hybrid","tantangan","ekstrovert","introvert","jago kandang","cara ampuh","percaya diri"]) }
+  ];
+  scores.sort((a, b) => b.s - a.s);
+  return scores[0].n;
 }
 
 function addTemplateToArticle(filePath, meta) {
@@ -100,7 +118,8 @@ for (const file of files) {
     keywords: meta.keywords,
     excerpt: meta.excerpt,
     image: meta.image,
-    url: 'blog/' + file
+    url: 'blog/' + file,
+    category: meta.category
   };
   articles.push(article);
 
