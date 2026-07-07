@@ -118,7 +118,7 @@ for (const file of files) {
     keywords: meta.keywords,
     excerpt: meta.excerpt,
     image: meta.image,
-    url: 'blog/' + file,
+    url: '/blog/' + file,
     category: meta.category
   };
   articles.push(article);
