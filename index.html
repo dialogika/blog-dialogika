@@ -169,23 +169,23 @@
               </ul>
             </div>
             <div class="col-lg-6 col-md-12 col-sm-12 order-3 order-lg-2">
-              <div class="header-top-contact-info">
+              <div class="header-top-contact-info" style="display: flex">
                 <div class="header-top-single-contact-item">
                   <div class="header-top-contact-icon">
                     <img
                       src="../assets/images/icons/contact-call.png"
                       alt=""
-                      width="24"
+                      width="20"
                     />
                   </div>
-                  <div class="header-top-contact-text text-size-small">
+                  <div class="">
                     <a href="https://wa.me/+6285162992597">+62 851 6299 2597</a>
                   </div>
                 </div>
                 <div class="header-top-single-contact-item">
                   <div class="header-top-contact-icon">
                     <img
-                      width="24"
+                      width="20"
                       src="../assets/images/icons/contact-email.png"
                       alt=""
                     />
@@ -548,8 +548,11 @@
               <!-- Mobile menu trigger -->
               <div class="mobile-menu-right">
                 <div
-                  class="mobile-navigation-icon d-block d-lg-none"
+                  type="button"
+                  class="mobile-toggle mobile-navigation-icon d-block d-lg-none"
                   id="mobile-menu-trigger"
+                  aria-label="Buka menu"
+                  aria-expanded="false"
                 >
                   <i></i>
                 </div>
@@ -569,9 +572,94 @@
         </button>
       </div>
       <nav aria-label="Navigasi mobile">
-        <a href="index.html">Home</a><a href="#latest">Artikel Terbaru</a
-        ><a href="#categories">Kategori</a><a href="#videos">Video Pilihan</a
-        ><a href="https://www.dialogika.co/program/">Program Dialogika</a>
+        <a href="index.html">Home</a>
+        <details>
+          <summary>Program</summary>
+          <a href="program/basic-play.html">Basic Play</a>
+          <a href="program/basic-class.html"
+            >Basic Class
+            <span class="badge rounded-pill text-bg-success">Best Buy</span></a
+          >
+          <a href="program/kids-play.html">Kids Play</a>
+          <a href="program/kids-class.html"
+            >Kids Class
+            <span class="badge rounded-pill text-bg-success">Best Buy</span></a
+          >
+          <a href="https://www.dialogika.co/program/first-class.html"
+            >First Class
+            <span class="badge rounded-pill text-bg-success">Best Buy</span></a
+          >
+          <a href="https://www.dialogika.co/program/first-kids.html"
+            >First Kids</a
+          >
+          <a href="https://www.dialogika.co/program/first-lite.html"
+            >First Lite</a
+          >
+          <a href="https://www.dialogika.co/program/first-private.html"
+            >First Private</a
+          >
+          <a href="https://www.dialogika.co/program/index-jogja.html"
+            >Yogyakarta</a
+          >
+          <a href="https://www.dialogika.co/program/index-tangsel.html"
+            >Bintaro</a
+          >
+          <a href="https://www.dialogika.co/program/index-solo.html">Solo</a>
+          <a href="https://www.dialogika.co/program/index-banjarbaru.html"
+            >Banjarbaru</a
+          >
+          <a href="https://www.dialogika.co/program/index-surabaya.html"
+            >Surabaya</a
+          >
+        </details>
+        <details>
+          <summary>Position</summary>
+          <a href="https://www.dialogika.co/intern/client-manager.html"
+            >Client Manager <span class="badge bg-success">Best</span></a
+          >
+          <a href="https://www.dialogika.co/intern/telemarketing.html"
+            >Telemarketing <span class="badge bg-success">Best</span></a
+          >
+          <a href="https://www.dialogika.co/intern/digital-marketing.html"
+            >Digital Marketing</a
+          >
+          <a href="https://www.dialogika.co/intern/model-talent.html"
+            >Model Talent <span class="badge bg-success">Best</span></a
+          >
+          <a href="https://www.dialogika.co/intern/social-media-analyst.html"
+            >Social Media Analyst</a
+          >
+          <a href="https://www.dialogika.co/intern/content-writing.html"
+            >Content Writing</a
+          >
+          <a href="https://www.dialogika.co/intern/design-specialist.html"
+            >Design Specialist</a
+          >
+          <a href="https://www.dialogika.co/intern/html-writing.html"
+            >HTML Writing</a
+          >
+          <a href="https://www.dialogika.co/intern/video-editing.html"
+            >Video Editor</a
+          >
+          <a href="https://www.dialogika.co/intern/people-development.html"
+            >People Development</a
+          >
+          <a href="https://www.dialogika.co/intern/hr-generalist.html"
+            >HR Generalist</a
+          >
+          <a href="https://www.dialogika.co/intern/recruiter-specialist.html"
+            >Recruiter Specialist <span class="badge bg-success">Best</span></a
+          >
+        </details>
+        <a href="https://www.dialogika.co/intern/resume/">Resume</a>
+        <details>
+          <summary>More</summary>
+          <a href="./event/">Event</a>
+          <a href="./about">About Us</a>
+          <a href="./shop">Shop</a>
+          <a href="./blog/index.html">Blog</a>
+          <a href="./service/">Service</a>
+        </details>
       </nav>
       <a class="panel-cta" href="https://wa.me/6285162992597"
         >Konsultasi Gratis <i class="icofont-long-arrow-right"></i
@@ -944,9 +1032,6 @@
       <!-- Bottom Banner Area End -->
     </main>
 
-    <button class="scroll-top" type="button" aria-label="Kembali ke atas">
-      <i class="icofont-long-arrow-up"></i>
-    </button>
     <div
       class="search-overlay"
       role="dialog"
@@ -974,6 +1059,7 @@
       </div>
     </div>
 
+    <main-footer></main-footer>
     <!-- JS Libraries (match blog pages) -->
     <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script>
     <script src="assets/js/vendor/jquery-3.5.1.min.js"></script>
