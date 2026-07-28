@@ -437,11 +437,8 @@ a {
 .blue-dialogika-btn-circle {
   width: 32px;
   height: 32px;
-  display: grid;
-  place-items: center;
   border-radius: 50%;
-  background: #fff;
-  color: var(--navy);
+  color: white;
 }
 
 .hero-grid {
