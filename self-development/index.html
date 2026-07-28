@@ -4,81 +4,880 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Self Development - Blog Dialogika</title>
-    <meta name="description" content="Artikel self development: pengembangan diri, personal branding, produktivitas, kepemimpinan, dan softskill untuk karier dan kehidupan." />
+    <meta
+      name="description"
+      content="Artikel self development: pengembangan diri, personal branding, produktivitas, kepemimpinan, dan softskill untuk karier dan kehidupan."
+    />
     <link rel="icon" href="../assets/images/favicon.png" />
     <link rel="stylesheet" href="../assets/css/vendor/bootstrap.min.css" />
-    <link rel="stylesheet" href="../assets/fonts/gordita-fonts.css" />
+
     <link rel="stylesheet" href="../assets/css/vendor/icofont.min.css" />
-    <link rel="stylesheet" href="../assets/css/vendor/bootstrap-icons/bootstrap-icons.css" />
+    <link
+      rel="stylesheet"
+      href="../assets/css/vendor/bootstrap-icons/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="../assets/css/plugins/lightgallery.min.css" />
+    <link rel="stylesheet" href="../assets/css/plugins/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="../assets/css/plugins/aos.css" />
+    <link rel="stylesheet" href="../assets/css/main-footer.css" />
     <link rel="stylesheet" href="../assets/css/style.css" />
     <link rel="stylesheet" href="../assets/css/homepage.css" />
+
     <style>
-      .category-hero{padding:60px 0 40px;background:linear-gradient(180deg,#f5f7fc 0,#fff 70%)}.category-hero h1{font-size:38px;color:var(--navy);font-weight:750;margin:0 0 8px}.category-hero p{color:var(--muted);max-width:600px;margin:0 0 28px}.category-search{display:flex;align-items:center;gap:16px;flex-wrap:wrap}.category-search input{flex:1;min-width:220px;border:1px solid var(--line);border-radius:7px;padding:14px 18px;font-size:14px;background:#fff}.category-search input:focus{outline:0;border-color:var(--blue)}.result-label{font-size:13px;color:var(--muted)}.result-label strong{color:var(--navy)}.category-articles{padding:0 0 80px}.pagination{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:45px;flex-wrap:wrap}.page-btn{border:1px solid var(--line);background:#fff;color:var(--navy);border-radius:6px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;transition:.2s}.page-btn:hover{background:var(--soft)}.page-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}.page-btn i{font-size:11px}.recent-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:25px}.recent-card{background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 4px 16px rgba(11,43,106,.06);transition:.3s}.recent-card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(11,43,106,.1)}.recent-card>a{display:block;height:205px;overflow:hidden}.recent-card>a img{width:100%;height:100%;object-fit:cover;transition:.4s}.recent-card:hover>a img{transform:scale(1.05)}.recent-card>div{padding:25px}.recent-card h3{font-size:18px;line-height:1.45;margin:9px 0}.recent-card h3 a{color:var(--navy)}.recent-card p{font-size:11px;line-height:1.7;color:var(--muted);min-height:58px}.post-category{display:inline-block;color:var(--blue);font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:800}.post-meta{display:flex;gap:18px;color:#7c8598;font-size:11px;flex-wrap:wrap}.post-meta i{color:var(--yellow);margin-right:5px}#empty-state{text-align:center;padding:60px 20px;color:var(--muted);font-size:15px}@media(max-width:991px){.recent-grid{grid-template-columns:repeat(2,1fr)}.category-hero h1{font-size:30px}}@media(max-width:767px){.category-hero{padding:40px 0 30px}.category-hero h1{font-size:26px}.recent-grid{grid-template-columns:1fr}.recent-card p{min-height:auto}}@media(max-width:480px){.category-search input{font-size:13px}}
+      .header-inline-search {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-left: 20px;
+      }
+      .header-inline-search__input {
+        width: 220px;
+        height: 45px;
+        border-radius: 5px;
+        border: 1px solid #f4f4f4;
+        padding: 0 14px;
+        background: #fff;
+        font-size: 14px;
+        outline: none;
+        transition: all 0.2s ease;
+      }
+      .header-inline-search__input:focus {
+        border-color: #0b2b6a;
+      }
+      .header-inline-search__button {
+        height: 45px;
+        width: 45px;
+        min-width: 45px;
+        border-radius: 5px;
+        border: 0;
+        background: #f4f4f4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition: all 0.2s ease;
+      }
+      .header-inline-search__button:hover {
+        opacity: 0.7;
+      }
+      .header-inline-search__button img {
+        width: 18px;
+        height: 18px;
+        object-fit: contain;
+        filter: none;
+      }
+      .social-share-area {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .social-share-area a {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-decoration: none;
+      }
+      .social-share-area a i:hover {
+        color: white;
+      }
+      @media only screen and (max-width: 991px) {
+        .header-inline-search__input {
+          width: 140px;
+        }
+        .header-inline-search {
+          margin-left: 7px;
+        }
+      }
+      @media only screen and (max-width: 767px) {
+        .header-inline-search {
+          margin-left: 0;
+        }
+        .header-inline-search__input {
+          width: 160px;
+        }
+      }
+      .dialogika-hero--compact {
+        padding: 24px 0 0;
+        background: linear-gradient(180deg, #f5f7fc 0, #fff 70%);
+      }
+      .dialogika-hero--compact .hero-category-area {
+        margin-bottom: 0;
+      }
+      .category-hero {
+        padding: 60px 0 40px;
+        background: linear-gradient(180deg, #f5f7fc 0, #fff 70%);
+      }
+      .category-hero h1 {
+        font-size: 38px;
+        color: var(--navy);
+        font-weight: 750;
+        margin: 0 0 8px;
+      }
+      .category-hero p {
+        color: var(--muted);
+        max-width: 600px;
+        margin: 0 0 28px;
+      }
+      .category-search {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .category-search input {
+        flex: 1;
+        min-width: 220px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        padding: 14px 18px;
+        font-size: 14px;
+        background: #fff;
+      }
+      .category-search input:focus {
+        outline: 0;
+        border-color: var(--blue);
+      }
+      .result-label {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .result-label strong {
+        color: var(--navy);
+      }
+      .category-articles {
+        padding: 0 0 80px;
+      }
+      .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin-top: 45px;
+        flex-wrap: wrap;
+      }
+      .page-btn {
+        border: 1px solid var(--line);
+        background: #fff;
+        color: var(--navy);
+        border-radius: 6px;
+        padding: 10px 16px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .page-btn:hover {
+        background: var(--soft);
+      }
+      .page-btn.active {
+        background: var(--navy);
+        color: #fff;
+        border-color: var(--navy);
+      }
+      .page-btn i {
+        font-size: 11px;
+      }
+      .recent-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+      }
+      .recent-card {
+        background: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(11, 43, 106, 0.06);
+        transition: 0.3s;
+      }
+      .recent-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 36px rgba(11, 43, 106, 0.1);
+      }
+      .recent-card > a {
+        display: block;
+        height: 205px;
+        overflow: hidden;
+      }
+      .recent-card > a img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: 0.4s;
+      }
+      .recent-card:hover > a img {
+        transform: scale(1.05);
+      }
+      .recent-card > div {
+        padding: 25px;
+      }
+      .recent-card h3 {
+        font-size: 18px;
+        line-height: 1.45;
+        margin: 9px 0;
+      }
+      .recent-card h3 a {
+        color: var(--navy);
+      }
+      .recent-card p {
+        font-size: 11px;
+        line-height: 1.7;
+        color: var(--muted);
+        min-height: 58px;
+      }
+      .post-category {
+        display: inline-block;
+        color: var(--blue);
+        font-size: 10px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        font-weight: 800;
+      }
+      .post-meta {
+        display: flex;
+        gap: 18px;
+        color: #7c8598;
+        font-size: 11px;
+        flex-wrap: wrap;
+      }
+      .post-meta i {
+        color: var(--yellow);
+        margin-right: 5px;
+      }
+      #empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--muted);
+        font-size: 15px;
+      }
+      @media (max-width: 991px) {
+        .recent-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .category-hero h1 {
+          font-size: 30px;
+        }
+      }
+      @media (max-width: 767px) {
+        .category-hero {
+          padding: 40px 0 30px;
+        }
+        .category-hero h1 {
+          font-size: 26px;
+        }
+        .recent-grid {
+          grid-template-columns: 1fr;
+        }
+        .recent-card p {
+          min-height: auto;
+        }
+      }
+      @media (max-width: 480px) {
+        .category-search input {
+          font-size: 13px;
+        }
+      }
     </style>
   </head>
   <body data-category="Self Development">
     <a class="skip-link" href="#main-content">Lewati ke konten</a>
 
-    <header class="header dialogika-header">
-      <div class="header-mid-area">
+    <!--======== header area =========-->
+    <header class="header">
+      <div class="header-top-area">
         <div class="container">
-          <div class="row align-items-center">
-            <div class="col-lg-3 col-md-4 col-7">
-              <a class="brand-lockup" href="../index.html" aria-label="Blog Dialogika beranda">
-                <img src="../assets/images/dialogikalogo.png" alt="Dialogika" />
-                <span><b>Blog Dialogika</b><small>Speak. Grow. Lead.</small></span>
-              </a>
+          <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6 order-1 order-lg-1">
+              <ul class="header-top-menu-list">
+                <li><a href="#">Help</a></li>
+                <li><a href="#">Status</a></li>
+                <li><a href="#">Writers</a></li>
+              </ul>
             </div>
-            <div class="col-lg-6 d-none d-lg-block">
-              <nav class="desktop-nav" aria-label="Navigasi utama">
-                <a href="../index.html">Home</a>
-                <a href="../index.html#latest">Artikel</a>
-                <a href="../index.html#categories">Kategori</a>
-                <a href="../index.html#videos">Video</a>
-                <a href="https://www.dialogika.co/program/" target="_blank" rel="noopener noreferrer">Program</a>
-              </nav>
+            <div class="col-lg-6 col-md-12 col-sm-12 order-3 order-lg-2">
+              <div class="header-top-contact-info" style="display: flex">
+                <div class="header-top-single-contact-item">
+                  <div class="header-top-contact-icon">
+                    <img
+                      src="../assets/images/icons/contact-call.png"
+                      alt=""
+                      width="20"
+                    />
+                  </div>
+                  <div class="">
+                    <a href="https://wa.me/+6285162992597">+62 851 6299 2597</a>
+                  </div>
+                </div>
+                <div class="header-top-single-contact-item">
+                  <div class="header-top-contact-icon">
+                    <img
+                      width="20"
+                      src="../assets/images/icons/contact-email.png"
+                      alt=""
+                    />
+                  </div>
+                  <div class="header-top-contact-text">
+                    <a href="mailto:admin@dialogika.co">admin@dialogika.co</a>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="col-lg-3 col-md-8 col-5">
-              <div class="header-actions">
-                <button class="round-action js-search-open" type="button" aria-label="Cari artikel"><i class="icofont-search-1"></i></button>
-                <a class="header-cta d-none d-md-inline-flex" href="https://wa.me/6285162992597" target="_blank" rel="noopener noreferrer">Konsultasi</a>
-                <button class="round-action mobile-toggle d-lg-none" type="button" aria-label="Buka menu" aria-expanded="false"><i class="bi bi-list"></i></button>
+            <div class="col-lg-3 col-md-6 col-sm-6 order-2 order-lg-3">
+              <div class="header-top-right-side">
+                <p>Indonesia</p>
+                <div class="wayder">
+                  <span class="wayder-icon">
+                    <img
+                      width="24"
+                      src="../assets/images/icons/wayder.png"
+                      alt=""
+                    />
+                  </span>
+                  <span class="wayder-text">28° C</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="topic-strip">
-        <div class="container topic-strip-inner">
-          <span class="topic-label">Explore</span>
-          <a href="../public-speaking/index.html">Public Speaking</a>
-          <a href="../communication/index.html">Communication</a>
-          <a href="../self-development/index.html">Self Development</a>
-          <a href="../mental-health/index.html">Mental Health</a>
+
+      <div class="header-mid-area">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-3 col-md-2 col-5">
+              <div class="logo">
+                <a href="../index.html">
+                  <img src="../assets/images/logo/logo.png" alt="" />
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 d-md-block d-none">
+              <div class="header-add-banner text-center">
+                <a href="https://www.dialogika.co/about/index.html">
+                  <img
+                    src="../assets/images/banners/header-add-banner.jpg"
+                    alt=""
+                  />
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-7">
+              <div class="header-mid-right-side">
+                <form class="header-inline-search" action="#" method="get">
+                  <input
+                    type="search"
+                    name="q"
+                    id="header-search-input"
+                    class="header-inline-search__input"
+                    placeholder="Cari artikel..."
+                    autocomplete="off"
+                  />
+                  <button
+                    type="submit"
+                    class="header-inline-search__button"
+                    aria-label="Search"
+                  >
+                    <img src="../assets/images/icons/search.png" alt="" />
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-bottom-area">
+        <div class="container">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            "
+          >
+            <div class="col-lg-4 col-9">
+              <ul class="social-share-area mt-15 mb-15">
+                <li>
+                  <a
+                    href="https://x.com/dialogika_co"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="blue-dialogika-btn-circle"
+                    ><i class="icofont-twitter"></i
+                  ></a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.facebook.com/dialogika.co"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="blue-dialogika-btn-circle"
+                    ><i class="icofont-facebook"></i
+                  ></a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.instagram.com/dialogika.co"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="blue-dialogika-btn-circle"
+                    ><i class="icofont-instagram"></i
+                  ></a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.linkedin.com/company/dialogika"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="blue-dialogika-btn-circle"
+                    ><i class="icofont-linkedin"></i
+                  ></a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="">
+              <div class="main-menu-area">
+                <nav id="navbar" class="navbar">
+                  <ul class="navbar-desktop-list">
+                    <li><a href="../index.html">Home</a></li>
+
+                    <li class="dropdown">
+                      <a href="https://www.dialogika.co/program/index.html">
+                        <span>Program</span> <i class="bi bi-chevron-down"></i>
+                      </a>
+                      <ul>
+                        <li class="dropdown">
+                          <a href="#">
+                            <span>Online</span>
+                            <i class="bi bi-chevron-right"></i>
+                          </a>
+                          <ul>
+                            <li>
+                              <a href="../program/basic-play.html"
+                                >Basic Play</a
+                              >
+                            </li>
+                            <li>
+                              <a href="../program/basic-class.html"
+                                >Basic Class
+                                <span class="badge rounded-pill text-bg-success"
+                                  >Best Buy</span
+                                >
+                              </a>
+                            </li>
+                            <li><hr /></li>
+                            <li>
+                              <a href="../program/kids-play.html">Kids Play</a>
+                            </li>
+                            <li>
+                              <a href="../program/kids-class.html"
+                                >Kids Class
+                                <span class="badge rounded-pill text-bg-success"
+                                  >Best Buy</span
+                                >
+                              </a>
+                            </li>
+                          </ul>
+                        </li>
+                        <li class="dropdown">
+                          <a href="#">
+                            <span>Offline</span>
+                            <i class="bi bi-chevron-right"></i>
+                          </a>
+                          <ul>
+                            <li>
+                              <a
+                                href="https://www.dialogika.co/program/first-class.html"
+                                >First Class
+                                <span class="badge rounded-pill text-bg-success"
+                                  >Best Buy</span
+                                >
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                href="https://www.dialogika.co/program/first-kids.html"
+                                >First Kids</a
+                              >
+                            </li>
+                            <li>
+                              <a
+                                href="https://www.dialogika.co/program/first-lite.html"
+                                >First Lite</a
+                              >
+                            </li>
+                            <li><hr /></li>
+                            <li>
+                              <a
+                                href="https://www.dialogika.co/program/first-private.html"
+                                >First Private</a
+                              >
+                            </li>
+                          </ul>
+                        </li>
+                        <li><hr /></li>
+                        <li class="dropdown">
+                          <a href="#">
+                            <span>Area</span>
+                            <i class="bi bi-chevron-right"></i>
+                          </a>
+                          <ul>
+                            <li>
+                              <a
+                                href="https://www.dialogika.co/program/index-jogja.html"
+                                >Yogyakarta</a
+                              >
+                            </li>
+                            <li>
+                              <a
+                                href="https://www.dialogika.co/program/index-tangsel.html"
+                                >Bintaro</a
+                              >
+                            </li>
+                            <li>
+                              <a
+                                href="https://www.dialogika.co/program/index-solo.html"
+                                >Solo</a
+                              >
+                            </li>
+                            <li>
+                              <a
+                                href="https://www.dialogika.co/program/index-banjarbaru.html"
+                                >Banjarbaru</a
+                              >
+                            </li>
+                            <li>
+                              <a
+                                href="https://www.dialogika.co/program/index-surabaya.html"
+                                >Surabaya</a
+                              >
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+
+                    <li class="dropdown">
+                      <a href="#">
+                        <span>Position</span> <i class="bi bi-chevron-down"></i>
+                      </a>
+                      <ul>
+                        <li>
+                          <a
+                            href="https://www.dialogika.co/intern/client-manager.html"
+                          >
+                            Client Manager
+                            <span class="badge bg-success">Best</span>
+                          </a>
+                        </li>
+                        <li><hr /></li>
+                        <li>
+                          <a
+                            href="https://www.dialogika.co/intern/telemarketing.html"
+                          >
+                            Telemarketing
+                            <span class="badge bg-success">Best</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            href="https://www.dialogika.co/intern/digital-marketing.html"
+                            >Digital Marketing</a
+                          >
+                        </li>
+                        <li><hr /></li>
+                        <li>
+                          <a
+                            href="https://www.dialogika.co/intern/model-talent.html"
+                          >
+                            Model Talent
+                            <span class="badge bg-success">Best</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            href="https://www.dialogika.co/intern/social-media-analyst.html"
+                            >Social Media Analyst</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="https://www.dialogika.co/intern/content-writing.html"
+                            >Content Writing</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="https://www.dialogika.co/intern/design-specialist.html"
+                            >Design Specialist</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="https://www.dialogika.co/intern/html-writing.html"
+                            >HTML Writing</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="https://www.dialogika.co/intern/video-editing.html"
+                            >Video Editor</a
+                          >
+                        </li>
+                        <li><hr /></li>
+                        <li>
+                          <a
+                            href="https://www.dialogika.co/intern/people-development.html"
+                            >People Development</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="https://www.dialogika.co/intern/hr-generalist.html"
+                            >HR Generalist</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="https://www.dialogika.co/intern/recruiter-specialist.html"
+                          >
+                            Recruiter Specialist
+                            <span class="badge bg-success">Best</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </li>
+
+                    <li>
+                      <a href="https://www.dialogika.co/intern/resume/"
+                        >Resume</a
+                      >
+                    </li>
+
+                    <li class="dropdown">
+                      <a href="#">
+                        <span>More</span> <i class="bi bi-chevron-down"></i>
+                      </a>
+                      <ul>
+                        <li><a href="../event/">Event</a></li>
+                        <li><a href="../about">About Us</a></li>
+                        <li><a href="../shop">Shop</a></li>
+                        <li><a href="index.html">Blog</a></li>
+                        <li><a href="../service/">Service</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+
+              <!-- Mobile menu trigger -->
+              <div class="mobile-menu-right">
+                <div
+                  type="button"
+                  class="mobile-toggle mobile-navigation-icon d-block d-lg-none"
+                  id="mobile-menu-trigger"
+                  aria-label="Buka menu"
+                  aria-expanded="false"
+                >
+                  <i></i>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </header>
+    <!--======== End of header area =========-->
 
     <div class="mobile-panel" aria-hidden="true">
       <div class="mobile-panel-head">
         <img src="../assets/images/dialogikalogo.png" alt="Dialogika" />
-        <button type="button" class="mobile-close" aria-label="Tutup menu"><i class="icofont-close"></i></button>
+        <button type="button" class="mobile-close" aria-label="Tutup menu">
+          <i class="icofont-close"></i>
+        </button>
       </div>
       <nav aria-label="Navigasi mobile">
-        <a href="../index.html">Home</a><a href="../index.html#latest">Artikel Terbaru</a><a href="../index.html#categories">Kategori</a><a href="../index.html#videos">Video Pilihan</a><a href="https://www.dialogika.co/program/">Program Dialogika</a>
+        <a href="../index.html">Home</a>
+        <details>
+          <summary>Program</summary>
+          <a href="../program/basic-play.html">Basic Play</a>
+          <a href="../program/basic-class.html"
+            >Basic Class
+            <span class="badge rounded-pill text-bg-success">Best Buy</span></a
+          >
+          <a href="../program/kids-play.html">Kids Play</a>
+          <a href="../program/kids-class.html"
+            >Kids Class
+            <span class="badge rounded-pill text-bg-success">Best Buy</span></a
+          >
+          <a href="https://www.dialogika.co/program/first-class.html"
+            >First Class
+            <span class="badge rounded-pill text-bg-success">Best Buy</span></a
+          >
+          <a href="https://www.dialogika.co/program/first-kids.html"
+            >First Kids</a
+          >
+          <a href="https://www.dialogika.co/program/first-lite.html"
+            >First Lite</a
+          >
+          <a href="https://www.dialogika.co/program/first-private.html"
+            >First Private</a
+          >
+          <a href="https://www.dialogika.co/program/index-jogja.html"
+            >Yogyakarta</a
+          >
+          <a href="https://www.dialogika.co/program/index-tangsel.html"
+            >Bintaro</a
+          >
+          <a href="https://www.dialogika.co/program/index-solo.html">Solo</a>
+          <a href="https://www.dialogika.co/program/index-banjarbaru.html"
+            >Banjarbaru</a
+          >
+          <a href="https://www.dialogika.co/program/index-surabaya.html"
+            >Surabaya</a
+          >
+        </details>
+        <details>
+          <summary>Position</summary>
+          <a href="https://www.dialogika.co/intern/client-manager.html"
+            >Client Manager <span class="badge bg-success">Best</span></a
+          >
+          <a href="https://www.dialogika.co/intern/telemarketing.html"
+            >Telemarketing <span class="badge bg-success">Best</span></a
+          >
+          <a href="https://www.dialogika.co/intern/digital-marketing.html"
+            >Digital Marketing</a
+          >
+          <a href="https://www.dialogika.co/intern/model-talent.html"
+            >Model Talent <span class="badge bg-success">Best</span></a
+          >
+          <a href="https://www.dialogika.co/intern/social-media-analyst.html"
+            >Social Media Analyst</a
+          >
+          <a href="https://www.dialogika.co/intern/content-writing.html"
+            >Content Writing</a
+          >
+          <a href="https://www.dialogika.co/intern/design-specialist.html"
+            >Design Specialist</a
+          >
+          <a href="https://www.dialogika.co/intern/html-writing.html"
+            >HTML Writing</a
+          >
+          <a href="https://www.dialogika.co/intern/video-editing.html"
+            >Video Editor</a
+          >
+          <a href="https://www.dialogika.co/intern/people-development.html"
+            >People Development</a
+          >
+          <a href="https://www.dialogika.co/intern/hr-generalist.html"
+            >HR Generalist</a
+          >
+          <a href="https://www.dialogika.co/intern/recruiter-specialist.html"
+            >Recruiter Specialist <span class="badge bg-success">Best</span></a
+          >
+        </details>
+        <a href="https://www.dialogika.co/intern/resume/">Resume</a>
+        <details>
+          <summary>More</summary>
+          <a href="../event/">Event</a>
+          <a href="../about">About Us</a>
+          <a href="../shop">Shop</a>
+          <a href="index.html">Blog</a>
+          <a href="../service/">Service</a>
+        </details>
       </nav>
-      <a class="panel-cta" href="https://wa.me/6285162992597">Konsultasi Gratis <i class="icofont-long-arrow-right"></i></a>
+      <a class="panel-cta" href="https://wa.me/6285162992597"
+        >Konsultasi Gratis <i class="icofont-long-arrow-right"></i
+      ></a>
     </div>
     <div class="page-scrim"></div>
 
     <main id="main-content">
+      <section class="dialogika-hero dialogika-hero--compact" id="categories">
+        <div class="container">
+          <div class="hero-category-area">
+            <a
+              class="single-hero-category-item"
+              href="../public-speaking/index.html"
+              ><img
+                src="../assets/images/catagory/public-speaking.png"
+                alt="Public speaking" />
+              <div class="hero-category-inner-box">
+                <span class="category-icon"><i class="bi bi-mic"></i></span>
+                <h3 class="title">Public Speaking</h3>
+                <span class="blue-dialogika-btn-circle"
+                  ><i class="icofont-long-arrow-right"></i
+                ></span></div
+            ></a>
+            <a
+              class="single-hero-category-item"
+              href="../communication/index.html"
+              ><img
+                src="../assets/images/catagory/communication.png"
+                alt="Communication skills" />
+              <div class="hero-category-inner-box">
+                <span class="category-icon"
+                  ><i class="bi bi-chat-dots"></i
+                ></span>
+                <h3 class="title">Communication</h3>
+                <span class="blue-dialogika-btn-circle"
+                  ><i class="icofont-long-arrow-right"></i
+                ></span></div
+            ></a>
+            <a
+              class="single-hero-category-item"
+              href="../self-development/index.html"
+              ><img
+                src="../assets/images/catagory/self-development.png"
+                alt="Self Development" />
+              <div class="hero-category-inner-box">
+                <span class="category-icon"><i class="bi bi-people"></i></span>
+                <h3 class="title">Self Development</h3>
+                <span class="blue-dialogika-btn-circle"
+                  ><i class="icofont-long-arrow-right"></i
+                ></span></div
+            ></a>
+            <a
+              class="single-hero-category-item"
+              href="../mental-health/index.html"
+              ><img
+                src="../assets/images/catagory/mental-health.png"
+                alt="Mental Health" />
+              <div class="hero-category-inner-box">
+                <span class="category-icon"
+                  ><i class="bi bi-briefcase"></i
+                ></span>
+                <h3 class="title">Mental Health</h3>
+                <span class="blue-dialogika-btn-circle"
+                  ><i class="icofont-long-arrow-right"></i
+                ></span></div
+            ></a>
+          </div>
+        </div>
+      </section>
       <section class="category-hero">
         <div class="container">
           <h1>Self Development</h1>
-          <p>Kembangkan potensi dirimu: personal branding, produktivitas, kepemimpinan, dan softskill untuk meraih karier impian dan hidup yang lebih bermakna.</p>
+          <p>
+            Kembangkan potensi dirimu: personal branding, produktivitas,
+            kepemimpinan, dan softskill untuk meraih karier impian dan hidup
+            yang lebih bermakna.
+          </p>
           <div class="category-search">
-            <input type="search" id="search-input" placeholder="Cari artikel self development..." autocomplete="off" />
-            <span class="result-label"><strong id="result-count">0</strong> artikel ditemukan</span>
+            <input
+              type="search"
+              id="search-input"
+              placeholder="Cari artikel self development..."
+              autocomplete="off"
+            />
+            <span class="result-label"
+              ><strong id="result-count">0</strong> artikel ditemukan</span
+            >
           </div>
         </div>
       </section>
@@ -87,33 +886,29 @@
         <div class="container">
           <div class="recent-grid" id="category-list"></div>
           <div class="pagination" id="pagination"></div>
-          <p id="empty-state" style="display:none">Tidak ada artikel yang cocok dengan pencarianmu.</p>
+          <p id="empty-state" style="display: none">
+            Tidak ada artikel yang cocok dengan pencarianmu.
+          </p>
         </div>
       </section>
     </main>
 
-    <footer class="dialogika-footer">
-      <div class="container footer-main">
-        <div class="footer-brand">
-          <img src="../assets/images/logo/logo.png" alt="Dialogika" />
-          <p>Wadah pengembangan diri untuk membangun komunikasi, kepercayaan diri, dan karier yang lebih kuat.</p>
-        </div>
-        <div><h3>Explore</h3><a href="../index.html#latest">Artikel</a><a href="../index.html#categories">Kategori</a><a href="../index.html#videos">Video</a></div>
-        <div><h3>Topik</h3><a href="../public-speaking/index.html">Public Speaking</a><a href="../self-development/index.html">Self Development</a><a href="../communication/index.html">Communication</a><a href="../mental-health/index.html">Mental Health</a></div>
-        <div><h3>Dialogika</h3><a href="https://www.dialogika.co/about">Tentang Kami</a><a href="https://www.dialogika.co/program/">Program</a><a href="https://wa.me/6285162992597">Hubungi Kami</a></div>
-      </div>
-      <div class="container footer-bottom">
-        <span>&copy; 2026 Dialogika. All rights reserved.</span>
-        <div>
-          <a href="https://instagram.com/dialogika.co" aria-label="Instagram"><i class="icofont-instagram"></i></a>
-          <a href="https://youtube.com/@dialogika_co" aria-label="YouTube"><i class="icofont-youtube-play"></i></a>
-          <a href="https://www.linkedin.com/company/dialogika" aria-label="LinkedIn"><i class="icofont-linkedin"></i></a>
-        </div>
-      </div>
-    </footer>
+    <main-footer></main-footer>
 
-    <button class="scroll-top" type="button" aria-label="Kembali ke atas"><i class="icofont-long-arrow-up"></i></button>
-
+    <!-- JS Libraries (match blog pages) -->
+    <script src="../assets/js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="../assets/js/vendor/jquery-3.5.1.min.js"></script>
+    <script src="../assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="../assets/js/vendor/bootstrap.min.js"></script>
+    <script src="../assets/js/plugins/lightgallery.min.js"></script>
+    <script src="../assets/js/plugins/isotope.min.js"></script>
+    <script src="../assets/js/plugins/masonry.min.js"></script>
+    <script src="../assets/js/plugins/images-loaded.min.js"></script>
+    <script src="../assets/js/plugins/swiper-bundle.min.js"></script>
+    <script src="../assets/js/plugins/aos.js"></script>
+    <script src="../assets/js/plugins/ajax.mail.js"></script>
+    <script src="../assets/js/headerfooter.js"></script>
+    <script src="../assets/js/main.js"></script>
     <script src="../assets/js/category.js"></script>
   </body>
 </html>
