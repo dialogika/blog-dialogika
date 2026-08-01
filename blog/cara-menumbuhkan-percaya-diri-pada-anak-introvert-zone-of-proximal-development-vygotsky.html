@@ -1605,7 +1605,7 @@
                         </div>
                       </div>
                       <div class="swiper-container related-post-slider-active">
-                        <div class="swiper-wrapper">
+                        <div class="swiper-wrapper" id="latest-post-wrapper">
                           <div class="swiper-slide">
                             <div class="single-related-post">
                               <div class="related-post-thum">
@@ -2013,6 +2013,151 @@
           e.preventDefault();
         });
       });
+
+      // =============================================
+      // LATEST POST — populate from post data
+      // =============================================
+      (function () {
+        // slug of the article currently being viewed (excluded from the list)
+        var CURRENT_SLUG =
+          "cara-menumbuhkan-percaya-diri-pada-anak-introvert-zone-of-proximal-development-vygotsky";
+
+        var MONTHS_ID = {
+          jan: 0,
+          feb: 1,
+          mar: 2,
+          apr: 3,
+          mei: 4,
+          jun: 5,
+          jul: 6,
+          agu: 7,
+          sep: 8,
+          okt: 9,
+          nov: 10,
+          des: 11,
+        };
+
+        function parseIndoDate(str) {
+          var parts = String(str).trim().split(/\s+/);
+          var day = parseInt(parts[0], 10) || 1;
+          var monthKey = (parts[1] || "").toLowerCase().slice(0, 3);
+          var month = MONTHS_ID.hasOwnProperty(monthKey)
+            ? MONTHS_ID[monthKey]
+            : 0;
+          var year = parseInt(parts[2], 10) || 1970;
+          return new Date(year, month, day).getTime();
+        }
+
+        function escapeHtml(str) {
+          return String(str)
+            .replace(/&/g, "\u0026amp;")
+            .replace(/</g, "\u0026lt;")
+            .replace(/>/g, "\u0026gt;")
+            .replace(/"/g, "\u0026quot;")
+            .replace(/'/g, "\u0026#039;");
+        }
+
+        var wrapper = document.getElementById("latest-post-wrapper");
+        if (!wrapper) return;
+
+        fetch("../assets/data/articles.json")
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (articles) {
+            if (!articles || !articles.length) return;
+
+            var posts = articles
+              .filter(function (p) {
+                return p.slug !== CURRENT_SLUG;
+              })
+              .sort(function (a, b) {
+                return parseIndoDate(b.date) - parseIndoDate(a.date);
+              });
+
+            if (!posts.length) return;
+
+            wrapper.innerHTML = posts
+              .map(function (p) {
+                return (
+                  '<div class="swiper-slide">' +
+                  '<div class="single-related-post">' +
+                  '<div class="related-post-thum">' +
+                  '<a href="' +
+                  escapeHtml(p.url) +
+                  '"><img src="' +
+                  escapeHtml(p.image) +
+                  '" alt="' +
+                  escapeHtml(p.title) +
+                  '" loading="lazy" /></a>' +
+                  "</div>" +
+                  '<div class="following-post-content">' +
+                  '<div class="following-blog-post-top">' +
+                  '<div class="trending-blog-post-category">' +
+                  '<a href="#">' +
+                  escapeHtml(p.category) +
+                  "</a>" +
+                  "</div>" +
+                  "</div>" +
+                  '<h5 class="following-blog-post-title">' +
+                  '<a href="' +
+                  escapeHtml(p.url) +
+                  '" >' +
+                  escapeHtml(p.title) +
+                  "</a>" +
+                  "</h5>" +
+                  '<div class="following-blog-post-meta">' +
+                  '<div class="post-meta-left-side">' +
+                  '<span class="post-date">' +
+                  '<i class="icofont-ui-calendar"></i> ' +
+                  escapeHtml(p.date) +
+                  "</span>" +
+                  "</div>" +
+                  "</div>" +
+                  "</div>" +
+                  "</div>" +
+                  "</div>"
+                );
+              })
+              .join("");
+
+            initSwiper();
+          })
+          .catch(function () {});
+
+        // (Re)initialize the Swiper instance so the newly injected slides
+        // are picked up by the slider + nav arrows.
+        function initSwiper() {
+          if (typeof Swiper === "undefined") return;
+          var el = document.querySelector(".related-post-slider-active");
+          if (!el) return;
+          if (el.swiper) {
+            el.swiper.destroy(true, true);
+          }
+          new Swiper(".related-post-slider-active", {
+            slidesPerView: 1,
+            spaceBetween: 24,
+            navigation: {
+              nextEl: ".related-post-button-next",
+              prevEl: ".related-post-button-prev",
+            },
+            breakpoints: {
+              576: { slidesPerView: 2 },
+              992: { slidesPerView: 2 },
+            },
+          });
+        }
+
+        // main.js may already initialize a Swiper on this element when the
+        // DOM is ready; give it a tick, then rebuild with the real slides.
+        if (document.readyState === "complete") {
+          setTimeout(initSwiper, 0);
+        } else {
+          window.addEventListener("load", function () {
+            setTimeout(initSwiper, 0);
+          });
+        }
+      })();
     </script>
   </body>
 </html>
