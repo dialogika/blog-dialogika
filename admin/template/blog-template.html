@@ -294,7 +294,7 @@
         gap: 10px;
         margin-top: 30px;
       }
-      .tags-color {
+      #article-body .tags-color {
         display: inline-block;
         background: #0b2b6a;
         color: #fff;
@@ -304,9 +304,10 @@
         text-decoration: none;
         font-size: 13px;
       }
-      .tags-color:hover {
-        background: #0b2b6a;
+      #article-body .tags-color:hover {
+        background: #163b84;
         color: #fff;
+        text-decoration: none;
       }
       .key-takeaways-section {
         background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%);
@@ -1093,7 +1094,7 @@
                         <li><a href="../event/">Event</a></li>
                         <li><a href="../about">About Us</a></li>
                         <li><a href="../shop">Shop</a></li>
-                        <li><a href="index.html">Blog</a></li>
+                        <li><a href="../index.html">Blog</a></li>
                         <li><a href="../service/">Service</a></li>
                       </ul>
                     </li>
@@ -1128,7 +1129,7 @@
                   <a href="../index.html">Home</a>
                 </li>
                 <li class="breadcrumb-item">
-                  <a href="#">{{BREADCRUMB_CATEGORY}}</a>
+                  <a href="{{CATEGORY_URL}}">{{BREADCRUMB_CATEGORY}}</a>
                 </li>
               </ul>
             </div>
@@ -1186,7 +1187,7 @@
                     <div class="blog-details-meta-box">
                       <div class="post-meta-left-side mb-2">
                         <div class="trending-blog-post-category">
-                          <a href="#">{{CATEGORY}}</a>
+                          <a href="{{CATEGORY_URL}}">{{CATEGORY}}</a>
                         </div>
                         <div class="following-blog-post-author">
                           By <a href="#">{{AUTHOR}}</a>
@@ -1367,7 +1368,10 @@
                 </div>
 
                 <div class="blog-details-category-area mt-5">
-                  <a class="single-hero-category-item">
+                  <a
+                    class="single-hero-category-item"
+                    href="../public-speaking/index.html"
+                  >
                     <img
                       src="../assets/images/catagory/public-speaking.png"
                       alt="Public Speaking"
@@ -1379,7 +1383,10 @@
                       </button>
                     </div>
                   </a>
-                  <a class="single-hero-category-item">
+                  <a
+                    class="single-hero-category-item"
+                    href="../self-development/index.html"
+                  >
                     <img
                       src="../assets/images/catagory/self-development.png"
                       alt="Self Development"
@@ -1391,7 +1398,10 @@
                       </button>
                     </div>
                   </a>
-                  <a class="single-hero-category-item">
+                  <a
+                    class="single-hero-category-item"
+                    href="../mental-health/index.html"
+                  >
                     <img
                       src="../assets/images/catagory/mental-health.png"
                       alt="Mental Health"
@@ -1403,7 +1413,10 @@
                       </button>
                     </div>
                   </a>
-                  <a class="single-hero-category-item">
+                  <a
+                    class="single-hero-category-item"
+                    href="../communication/index.html"
+                  >
                     <img
                       src="../assets/images/catagory/communication.png"
                       alt="Communication"
@@ -1582,7 +1595,7 @@
           <nav class="offcanvas-navigation">
             <ul>
               <li><a href="../index.html">Home</a></li>
-              <li><a href="index.html">Blog</a></li>
+              <li><a href="../index.html">Blog</a></li>
               <li><a href="../about">About</a></li>
               <li><a href="../shop">Shop</a></li>
               <li><a href="../event/">Event</a></li>
@@ -1791,7 +1804,7 @@
                   '<div class="following-post-content">' +
                   '<div class="following-blog-post-top">' +
                   '<div class="trending-blog-post-category">' +
-                  '<a href="#">' +
+                  '<a href="../' + String(p.category).toLowerCase().replace(/ /g, '-') + '/index.html">' +
                   escapeHtml(p.category) +
                   "</a>" +
                   "</div>" +

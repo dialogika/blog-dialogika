@@ -77,7 +77,8 @@
     }
 
     var breadcrumbJsonLd = Schema.generateBreadcrumbSchema(category, title);
-    var tagsHtml = ContentRenderer.renderTags(tags);
+    var categoryUrl = Config.categoryUrls[category] || "#";
+    var tagsHtml = ContentRenderer.renderTags(tags, category, categoryUrl);
     var takeawaysHtml = ContentRenderer.renderTakeaways(takeaways);
     var faqHtml = ContentRenderer.renderFaq(faqs);
     var sourcesHtml = ContentRenderer.renderSources(sources);
@@ -112,6 +113,7 @@
       SOURCES_HTML: sourcesHtml,
       CHEATSHEET_URL: Utils.escapeHtml(cheatsheetPdf),
       BREADCRUMB_CATEGORY: Utils.escapeHtml(category),
+      CATEGORY_URL: Utils.escapeHtml(categoryUrl),
       SLUG: slug,
     };
   }

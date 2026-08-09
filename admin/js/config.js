@@ -23,6 +23,14 @@
       "Communication",
     ],
 
+    /* Category → category page URL (relative from blog/ folder) */
+    categoryUrls: {
+      "Public Speaking": "../public-speaking/index.html",
+      "Self Development": "../self-development/index.html",
+      "Mental Health": "../mental-health/index.html",
+      "Communication": "../communication/index.html",
+    },
+
     /* Social media links used in the generated template (static) */
     social: {
       instagram: "https://www.instagram.com/dialogika.co",

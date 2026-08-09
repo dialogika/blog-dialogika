@@ -10,14 +10,28 @@
   BlogGenerator.ContentRenderer = {
     /**
      * Render tags as HTML.
+     * The tag that matches the article's category name links to the category
+     * page (so the category navigation works); other keyword tags stay as
+     * non-navigational pills, matching the published article style.
      * @param {string[]} tags
+     * @param {string} [category] — article's category name (e.g. "Public Speaking")
+     * @param {string} [categoryUrl] — relative URL of the article's category page
      * @returns {string} — HTML string
      */
-    renderTags: function (tags) {
+    renderTags: function (tags, category, categoryUrl) {
       if (!tags || tags.length === 0) return "";
+      var cat = String(category || "").toLowerCase().trim();
       return tags
         .map(function (tag) {
-          return '<a href="#" class="tags-color">' + BlogGenerator.Utils.escapeHtml(tag) + "</a>";
+          var href =
+            categoryUrl && String(tag).toLowerCase().trim() === cat
+              ? categoryUrl
+              : "#";
+          return (
+            '<a href="' + BlogGenerator.Utils.escapeHtml(href) + '" class="tags-color">' +
+            BlogGenerator.Utils.escapeHtml(tag) +
+            "</a>"
+          );
         })
         .join("\n                          ");
     },
