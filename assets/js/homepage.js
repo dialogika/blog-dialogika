@@ -27,14 +27,43 @@
   }
 
   function getCategory(article) {
+    var explicit = safeText(article.category, "");
+    if (explicit) return explicit;
     var keywords = safeText(article.keywords, "General");
     return keywords.split(",")[0].trim() || "General";
   }
 
+  var MONTHS = {
+    januari: 0, jan: 0,
+    februari: 1, feb: 1,
+    maret: 2, mar: 2,
+    april: 3, apr: 3,
+    mei: 4, may: 4,
+    juni: 5, jun: 5,
+    juli: 6, jul: 6,
+    agustus: 7, aug: 7,
+    september: 8, sep: 8,
+    oktober: 9, okt: 9, oct: 9,
+    november: 10, nov: 10,
+    desember: 11, des: 11, dec: 11
+  };
+
+  function parseDate(value) {
+    var raw = safeText(value, "");
+    if (!raw) return null;
+    var direct = new Date(raw);
+    if (!isNaN(direct.getTime())) return direct;
+    var m = raw.match(/^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})$/);
+    if (!m) return null;
+    var month = MONTHS[m[2].toLowerCase()];
+    if (month === undefined) return null;
+    return new Date(+m[3], month, +m[1]);
+  }
+
   function formatDate(value) {
     if (!value) return "Tanggal belum tersedia";
-    var date = new Date(value);
-    if (isNaN(date.getTime())) return "Tanggal belum tersedia";
+    var date = parseDate(value);
+    if (!date) return "Tanggal belum tersedia";
     return date.toLocaleDateString("id-ID", {
       day: "2-digit",
       month: "long",

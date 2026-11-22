@@ -3,10 +3,12 @@
 
   var body = document.body;
   var CATEGORY = body.getAttribute("data-category") || "";
+  var IS_ALL = !CATEGORY || CATEGORY.toLowerCase() === "all";
   var PER_PAGE = 6;
   var allArticles = [];
   var currentPage = 1;
   var currentSearch = "";
+  var currentFilter = "";
 
   var panel = document.querySelector(".mobile-panel");
   var scrim = document.querySelector(".page-scrim");
@@ -25,10 +27,37 @@
       .replace(/'/g, "&#39;");
   }
 
+  var MONTHS = {
+    januari: 0, jan: 0,
+    februari: 1, feb: 1,
+    maret: 2, mar: 2,
+    april: 3, apr: 3,
+    mei: 4, may: 4,
+    juni: 5, jun: 5,
+    juli: 6, jul: 6,
+    agustus: 7, aug: 7,
+    september: 8, sep: 8,
+    oktober: 9, okt: 9, oct: 9,
+    november: 10, nov: 10,
+    desember: 11, des: 11, dec: 11
+  };
+
+  function parseDate(value) {
+    var raw = safeText(value, "");
+    if (!raw) return null;
+    var direct = new Date(raw);
+    if (!isNaN(direct.getTime())) return direct;
+    var m = raw.match(/^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})$/);
+    if (!m) return null;
+    var month = MONTHS[m[2].toLowerCase()];
+    if (month === undefined) return null;
+    return new Date(+m[3], month, +m[1]);
+  }
+
   function formatDate(value) {
     if (!value) return "Tanggal belum tersedia";
-    var date = new Date(value);
-    if (isNaN(date.getTime())) return "Tanggal belum tersedia";
+    var date = parseDate(value);
+    if (!date) return "Tanggal belum tersedia";
     return date.toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" });
   }
 
@@ -65,7 +94,8 @@
     var emptyState = document.getElementById("empty-state");
     if (emptyState) emptyState.style.display = "none";
     root.innerHTML = articles.map(function (article) {
-      return '<article class="recent-card"><a href="' + escapeHtml(article.url) + '"><img src="' + escapeHtml(getImage(article, "../assets/images/blog/01.jpg")) + '" alt="' + escapeHtml(article.title) + '" /></a><div><span class="post-category">' + escapeHtml(CATEGORY) + '</span><h3><a href="' + escapeHtml(article.url) + '">' + escapeHtml(article.title) + '</a></h3><p>' + escapeHtml(safeText(article.excerpt, "Temukan artikel dari Dialogika.")) + '</p><div class="post-meta"><span>Dialogika</span><span>' + escapeHtml(estimateReadTime(article)) + '</span><span>' + escapeHtml(formatDate(article.date)) + '</span></div></div></article>';
+      var label = safeText(article.category, IS_ALL ? "Artikel" : CATEGORY);
+      return '<article class="recent-card"><a href="' + escapeHtml(article.url) + '"><img src="' + escapeHtml(getImage(article, "../assets/images/blog/01.jpg")) + '" alt="' + escapeHtml(article.title) + '" /></a><div><span class="post-category">' + escapeHtml(label) + '</span><h3><a href="' + escapeHtml(article.url) + '">' + escapeHtml(article.title) + '</a></h3><p>' + escapeHtml(safeText(article.excerpt, "Temukan artikel dari Dialogika.")) + '</p><div class="post-meta"><span>Dialogika</span><span>' + escapeHtml(estimateReadTime(article)) + '</span><span>' + escapeHtml(formatDate(article.date)) + '</span></div></div></article>';
     }).join("");
   }
 
@@ -100,10 +130,49 @@
     if (el) el.textContent = count;
   }
 
-  function render() {
-    var filtered = allArticles.filter(function (a) {
-      return a.category === CATEGORY;
+  function renderFilters() {
+    var root = document.getElementById("category-filter");
+    if (!root || !IS_ALL) return;
+    var counts = {};
+    allArticles.forEach(function (article) {
+      var name = safeText(article.category, "Lainnya");
+      counts[name] = (counts[name] || 0) + 1;
     });
+    var html =
+      '<button class="archive-filter active" data-category-value="" type="button">Semua (' +
+      allArticles.length +
+      ")</button>";
+    Object.keys(counts).sort().forEach(function (name) {
+      html +=
+        '<button class="archive-filter" data-category-value="' +
+        escapeHtml(name) +
+        '" type="button">' +
+        escapeHtml(name) +
+        " (" +
+        counts[name] +
+        ")</button>";
+    });
+    root.innerHTML = html;
+    root.querySelectorAll(".archive-filter").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        currentFilter = btn.getAttribute("data-category-value") || "";
+        currentPage = 1;
+        root.querySelectorAll(".archive-filter").forEach(function (item) {
+          item.classList.toggle("active", item === btn);
+        });
+        render();
+      });
+    });
+  }
+
+  function render() {
+    var filtered = IS_ALL
+      ? allArticles.filter(function (a) {
+          return !currentFilter || a.category === currentFilter;
+        })
+      : allArticles.filter(function (a) {
+          return a.category === CATEGORY;
+        });
     if (currentSearch) {
       var q = currentSearch.toLowerCase();
       filtered = filtered.filter(function (a) {
@@ -124,6 +193,7 @@
       .then(function (r) { return r.json(); })
       .then(function (articles) {
         allArticles = articles;
+        renderFilters();
         render();
       })
       .catch(function () {});
