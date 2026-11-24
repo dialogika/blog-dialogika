@@ -144,6 +144,31 @@
     if (latest) latest.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
+  function badgeClass(category) {
+    var c = String(category || "").toLowerCase();
+    if (/mental|health|psych|stres|emosi/.test(c))
+      return "bg-badge-mind text-badge-mind-text";
+    if (/self|diri|develop|confiden|percaya/.test(c))
+      return "bg-badge-mind text-badge-mind-text";
+    if (/komunikasi|communication|interview|hrd|karier|career|kerja/.test(c))
+      return "bg-badge-comm text-badge-comm-text";
+    return "bg-badge-speaking text-badge-speaking-text";
+  }
+
+  function categoryPill(category, href, extra) {
+    return (
+      '<a class="post-category inline-block ' +
+      badgeClass(category) +
+      " text-label-pill px-2.5 py-1 rounded-full uppercase tracking-wider " +
+      (extra || "") +
+      '" href="' +
+      href +
+      '">' +
+      escapeHtml(category) +
+      "</a>"
+    );
+  }
+
   function renderHeroPosts(articles) {
     var root = document.getElementById("hero-post-list");
     if (!root) return;
@@ -155,23 +180,33 @@
         return (
           '<article class="single-hero-blog-post searchable-card' +
           accent +
-          '" data-search="' +
+          ' bg-surface-card rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 p-space-md flex flex-col sm:flex-row gap-space-md group" data-search="' +
           escapeHtml(getSearch(article)) +
-          '"><div class="hero-blog-post-top"><a class="post-category" href="#latest">' +
-          escapeHtml(category) +
-          '</a><span>Oleh Dialogika</span></div><h3 class="hero-blog-post-title"><a href="' +
+          '"><a href="' +
+          escapeHtml(article.url) +
+          '" class="block w-full sm:w-40 h-36 shrink-0 rounded-xl overflow-hidden bg-surface-container relative"><img src="' +
+          escapeHtml(
+            getImage(article, "assets/images/latest-post/0" + (index + 1) + ".jpg"),
+          ) +
+          '" alt="' +
+          escapeHtml(article.title) +
+          '" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /></a>' +
+          '<div class="flex-1 min-w-0 flex flex-col justify-between"><div><div class="hero-blog-post-top flex flex-wrap items-center gap-2 text-label-meta text-on-surface-variant mb-1.5">' +
+          categoryPill(category, "#latest", "!py-0.5 !px-2 max-w-[160px] truncate") +
+          "<span>Oleh Dialogika</span></div>" +
+          '<h3 class="hero-blog-post-title font-heading text-headline-sm md:text-[17px] font-bold text-on-surface group-hover:text-primary transition-colors leading-snug line-clamp-2"><a href="' +
           escapeHtml(article.url) +
           '">' +
           escapeHtml(article.title) +
-          "</a></h3><p>" +
+          '</a></h3><p class="text-body-small text-on-surface-variant mt-1 line-clamp-2">' +
           escapeHtml(
             safeText(article.excerpt, "Baca insight terbaru dari Dialogika."),
           ) +
-          '</p><div class="post-meta"><span><i class="icofont-ui-calendar"></i> ' +
+          '</p></div><div class="post-meta flex items-center justify-between pt-2 text-label-meta text-on-surface-variant"><span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">calendar_today</span> ' +
           escapeHtml(formatDate(article.date)) +
           "</span><span>" +
           escapeHtml(estimateReadTime(article)) +
-          "</span></div></article>"
+          "</span></div></div></article>"
         );
       })
       .join("");
@@ -187,23 +222,26 @@
       .map(function (article) {
         var category = getCategory(article);
         return (
-          '<article class="trending-single-item searchable-card" data-search="' +
+          '<article class="trending-single-item searchable-card bg-surface-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col group" data-search="' +
           escapeHtml(getSearch(article)) +
-          '"><a class="trending-post-thum" href="' +
+          '"><a class="trending-post-thum relative block w-full aspect-[16/9] overflow-hidden bg-surface-container" href="' +
           escapeHtml(article.url) +
           '"><img src="' +
           escapeHtml(getImage(article, "assets/images/latest-post/01.jpg")) +
           '" alt="' +
           escapeHtml(article.title) +
-          '" /></a><div class="trending-post-content"><a class="post-category" href="#latest">' +
-          escapeHtml(category) +
-          '</a><h3><a href="' +
+          '" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /><span class="absolute bottom-2 right-2 bg-navy-light/80 text-on-primary text-[11px] font-medium px-2 py-0.5 rounded-md flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">schedule</span>' +
+          escapeHtml(estimateReadTime(article)) +
+          '</span></a><div class="trending-post-content p-space-lg flex-1 flex flex-col justify-between"><div>' +
+          '<div class="mb-2">' +
+          categoryPill(category, "#latest", "max-w-full truncate") +
+          '</div><h3 class="font-heading text-headline-md font-bold text-on-surface group-hover:text-primary transition-colors leading-snug line-clamp-3"><a href="' +
           escapeHtml(article.url) +
           '">' +
           escapeHtml(article.title) +
-          '</a></h3><div class="post-meta"><span>' +
-          escapeHtml(estimateReadTime(article)) +
-          "</span><span>Dialogika</span></div></div></article>"
+          '</a></h3></div><div class="post-meta pt-space-md mt-space-md border-t border-border-subtle/50 flex items-center justify-between text-label-meta text-on-surface-variant"><span class="flex items-center gap-2"><span class="w-7 h-7 rounded-full bg-surface-container flex items-center justify-center font-bold text-[11px] text-primary">DG</span><span class="font-medium text-on-surface">Dialogika</span></span><span>' +
+          escapeHtml(formatDate(article.date)) +
+          "</span></div></div></article>"
         );
       })
       .join("");
@@ -211,30 +249,34 @@
     var article = articles[6] || articles[0];
     if (!article) return;
     feature.innerHTML =
-      '<article class="trending-feature searchable-card" data-search="' +
+      '<article class="trending-feature searchable-card relative bg-surface-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col md:flex-row group" data-search="' +
       escapeHtml(getSearch(article)) +
-      '"><img src="' +
+      '"><a href="' +
+      escapeHtml(article.url) +
+      '" class="block md:w-1/2 aspect-[16/9] md:aspect-auto md:min-h-[260px] overflow-hidden bg-surface-container"><img src="' +
       escapeHtml(
         getImage(article, "assets/images/blog/blog-details-video.jpg"),
       ) +
       '" alt="' +
       escapeHtml(article.title) +
-      '" /><div class="feature-content"><span class="post-category">Most Popular</span><h3><a href="' +
+      '" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" /></a><div class="feature-content md:w-1/2 p-space-lg md:p-space-xl flex flex-col justify-center gap-space-sm"><span class="post-category inline-flex items-center gap-1 w-fit bg-primary text-on-primary text-label-pill px-3 py-1 rounded-full uppercase tracking-wider"><span class="material-symbols-outlined text-[14px]">local_fire_department</span>Most Popular</span><h3 class="font-heading text-headline-md md:text-headline-lg font-extrabold text-on-surface group-hover:text-primary transition-colors leading-tight"><a href="' +
       escapeHtml(article.url) +
       '">' +
       escapeHtml(article.title) +
-      "</a></h3><p>" +
+      '</a></h3><p class="text-body-default text-on-surface-variant line-clamp-3">' +
       escapeHtml(
         safeText(
           article.excerpt,
           "Artikel pilihan untuk meningkatkan komunikasi dan rasa percaya diri.",
         ),
       ) +
-      '</p><div class="post-meta"><span>' +
+      '</p><div class="post-meta flex flex-wrap items-center gap-2 text-label-meta text-on-surface-variant"><span>' +
       escapeHtml(estimateReadTime(article)) +
-      "</span><span>" +
+      "</span><span>•</span><span>" +
       escapeHtml(getCategory(article)) +
-      "</span></div></div></article>";
+      '</span></div><a href="' +
+      escapeHtml(article.url) +
+      '" class="inline-flex items-center gap-1 font-heading text-headline-sm font-bold text-primary hover:text-royal-blue-hover mt-1">Baca artikel <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span></a></div></article>';
   }
 
   function renderFollowing(articles) {
@@ -245,30 +287,30 @@
       .map(function (article, index) {
         var category = getCategory(article);
         return (
-          '<article class="following-card searchable-card" data-search="' +
+          '<article class="following-card searchable-card bg-surface-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col group" data-search="' +
           escapeHtml(getSearch(article)) +
-          '"><a class="following-image" href="' +
+          '"><a class="following-image relative block w-full aspect-[16/10] overflow-hidden bg-surface-container" href="' +
           escapeHtml(article.url) +
           '"><img src="' +
           escapeHtml(getImage(article, "assets/images/blog/01.jpg")) +
           '" alt="' +
           escapeHtml(article.title) +
-          '" /><span class="card-number">' +
+          '" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /><span class="card-number absolute top-3 left-3 w-10 h-10 rounded-xl bg-accent-yellow text-navy-light font-heading font-extrabold flex items-center justify-center shadow-md">' +
           String(index + 1).padStart(2, "0") +
-          '</span></a><div class="following-content"><a class="post-category" href="#latest">' +
-          escapeHtml(category) +
-          '</a><h3><a href="' +
+          '</span></a><div class="following-content p-space-lg flex-1 flex flex-col"><div class="mb-2">' +
+          categoryPill(category, "#latest", "max-w-full truncate") +
+          '</div><h3 class="font-heading text-headline-md font-bold text-on-surface group-hover:text-primary transition-colors leading-snug line-clamp-2 mb-2"><a href="' +
           escapeHtml(article.url) +
           '">' +
           escapeHtml(article.title) +
-          "</a></h3><p>" +
+          '</a></h3><p class="text-body-small text-on-surface-variant line-clamp-3">' +
           escapeHtml(
             safeText(
               article.excerpt,
               "Insight terbaru dari Dialogika untuk bantu kamu berkembang.",
             ),
           ) +
-          '</p><div class="post-meta"><span>' +
+          '</p><div class="post-meta mt-auto pt-space-md flex items-center justify-between text-label-meta text-on-surface-variant"><span>' +
           escapeHtml(formatDate(article.date)) +
           "</span><span>" +
           escapeHtml(estimateReadTime(article)) +
@@ -285,7 +327,7 @@
       .slice(0, 3)
       .map(function (article, index) {
         return (
-          '<a class="latest-item searchable-card" data-search="' +
+          '<a class="latest-item searchable-card flex items-center gap-3 py-2.5 border-b border-border-subtle/50 last:border-0 group" data-search="' +
           escapeHtml(getSearch(article)) +
           '" href="' +
           escapeHtml(article.url) +
@@ -298,9 +340,9 @@
           ) +
           '" alt="' +
           escapeHtml(article.title) +
-          '" /><span><small>' +
+          '" loading="lazy" class="w-16 h-16 rounded-xl object-cover shrink-0 bg-surface-container" /><span class="min-w-0 flex flex-col gap-0.5"><small class="text-label-meta text-primary font-semibold truncate">' +
           escapeHtml(getCategory(article)) +
-          "</small><b>" +
+          '</small><b class="font-heading text-[14px] leading-snug font-bold text-on-surface group-hover:text-primary transition-colors line-clamp-2">' +
           escapeHtml(article.title) +
           "</b></span></a>"
         );
@@ -315,28 +357,28 @@
       .slice(0, 6)
       .map(function (article) {
         return (
-          '<article class="recent-card searchable-card" data-search="' +
+          '<article class="recent-card searchable-card bg-surface-card rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 p-3 flex gap-3 group" data-search="' +
           escapeHtml(getSearch(article)) +
           '"><a href="' +
           escapeHtml(article.url) +
-          '"><img src="' +
+          '" class="block w-24 h-24 sm:w-28 sm:h-28 shrink-0 rounded-xl overflow-hidden bg-surface-container"><img src="' +
           escapeHtml(getImage(article, "assets/images/blog/01.jpg")) +
           '" alt="' +
           escapeHtml(article.title) +
-          '" /></a><div><a class="post-category" href="#recent">' +
+          '" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /></a><div class="min-w-0 flex flex-col"><a class="post-category text-label-meta text-primary font-semibold truncate" href="#recent">' +
           escapeHtml(getCategory(article)) +
-          '</a><h3><a href="' +
+          '</a><h3 class="font-heading text-[15px] leading-snug font-bold text-on-surface group-hover:text-primary transition-colors line-clamp-2 mt-0.5"><a href="' +
           escapeHtml(article.url) +
           '">' +
           escapeHtml(article.title) +
-          "</a></h3><p>" +
+          '</a></h3><p class="text-body-small text-on-surface-variant line-clamp-1 mt-0.5">' +
           escapeHtml(
             safeText(
               article.excerpt,
               "Temukan artikel terbaru dari Dialogika.",
             ),
           ) +
-          '</p><div class="post-meta"><span>Dialogika</span><span>' +
+          '</p><div class="post-meta mt-auto pt-1 flex items-center gap-2 text-label-meta text-on-surface-variant"><span>Dialogika</span><span>•</span><span>' +
           escapeHtml(estimateReadTime(article)) +
           "</span></div></div></article>"
         );
@@ -354,6 +396,13 @@
       }).length;
       var label = button.querySelector("small");
       if (label) label.textContent = count + " artikel";
+    });
+    document.querySelectorAll("[data-category-count]").forEach(function (el) {
+      var topic = (el.getAttribute("data-category-count") || "").toLowerCase();
+      var count = articles.filter(function (article) {
+        return getSearch(article).indexOf(topic) !== -1;
+      }).length;
+      if (count) el.textContent = count + " artikel terbit";
     });
   }
 
