@@ -573,3 +573,54 @@ class Footer extends HTMLElement {
 
 customElements.define("main-footer", Footer);
 customElements.define("main-header", Header);
+
+// Pencarian di header: arahkan ke halaman arsip, atau filter langsung saat sudah di arsip.
+(function () {
+  "use strict";
+
+  var script = document.currentScript;
+  var archiveUrl = script ? new URL("../../blog/index.html", script.src).href : "";
+
+  function isArchivePage() {
+    return (
+      document.body &&
+      document.body.getAttribute("data-category") === "all" &&
+      !!document.getElementById("category-list")
+    );
+  }
+
+  function currentQuery(input) {
+    return input ? input.value.trim() : "";
+  }
+
+  document.addEventListener("submit", function (event) {
+    var form = event.target;
+    if (!form || !form.classList || !form.classList.contains("header-inline-search")) return;
+    event.preventDefault();
+
+    var input = form.querySelector('input[type="search"]');
+    var query = currentQuery(input);
+
+    if (isArchivePage()) {
+      document.dispatchEvent(
+        new CustomEvent("archive:search", { detail: { query: query }, bubbles: true })
+      );
+      return;
+    }
+
+    if (archiveUrl) {
+      window.location.href =
+        archiveUrl + (query ? "?q=" + encodeURIComponent(query) : "");
+    }
+  });
+
+  if (isArchivePage()) {
+    var params = new URLSearchParams(window.location.search);
+    var initial = params.get("q") || "";
+    if (initial) {
+      document.querySelectorAll(".header-inline-search input").forEach(function (input) {
+        input.value = initial;
+      });
+    }
+  }
+})();

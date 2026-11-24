@@ -1220,6 +1220,13 @@ a {
   color: var(--navy);
 }
 
+.recent-card h3 .search-highlight {
+  background: #ffef8f;
+  color: inherit;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
 .recent-card p {
   font-size: 11px;
   line-height: 1.7;
