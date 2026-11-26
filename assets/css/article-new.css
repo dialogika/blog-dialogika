@@ -146,3 +146,10 @@ body { overscroll-behavior: none; }
   font-family: "Plus Jakarta Sans", sans-serif; font-size: 19px; line-height: 1.4 !important; color: #191c1e;
   margin: 1.75rem 0 0.75rem !important;
 }
+
+/* ---------- Footer lama <main-footer> (dari assets/js/headerfooter.js) ---------- */
+main-footer { display: block; line-height: 1.74; font-size: 15px; font-weight: 500; font-family: "Open sans", sans-serif; }
+@media (min-width: 1200px) { main-footer .container { max-width: 1200px; } }
+body main-footer a, body main-footer button { color: inherit; display: inline-block; line-height: inherit; text-decoration: none; cursor: pointer; }
+/* Tailwind punya utility .collapse (visibility: collapse) yang bentrok dengan Bootstrap */
+body main-footer .collapse { visibility: visible; }
