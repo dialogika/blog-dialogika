@@ -1,0 +1,148 @@
+/* =====================================================================
+   Dialogika Blog — Tampilan Artikel Baru (Tailwind)
+   Dipakai oleh admin/template/blog-template.html dan semua artikel di /blog.
+   Tailwind (CDN) mengatur layout; file ini mengatur isi artikel yang
+   berasal dari editor (HTML bebas, sering membawa inline style Google Docs).
+   ===================================================================== */
+
+html { scroll-behavior: smooth; scroll-padding-top: 9rem; }
+body { overscroll-behavior: none; }
+.material-symbols-outlined { font-variation-settings: "FILL" 0, "wght" 400; line-height: 1; }
+
+/* Proteksi gambar featured */
+.protected-media img { pointer-events: none; -webkit-user-drag: none; user-select: none; }
+
+/* Daftar isi aktif */
+.toc-link.is-active { background: #eff6ff; color: #0037b0; font-weight: 600; }
+.toc-link.is-active .toc-num { color: #0037b0; }
+
+/* ---------- Key takeaways ---------- */
+.kt-list { display: flex; flex-direction: column; gap: 0.6rem; margin: 0; padding: 0; list-style: none; }
+.kt-list li { position: relative; padding-left: 1.75rem; font-family: Inter, sans-serif; font-size: 15px; line-height: 1.6; color: #191c1e; }
+.kt-list li::before {
+  content: "check_circle"; font-family: "Material Symbols Outlined"; font-size: 18px; line-height: 1;
+  position: absolute; left: 0; top: 0.15rem; color: #0037b0;
+}
+
+/* ---------- Isi artikel (prose) ---------- */
+.article-prose { font-family: Inter, sans-serif; font-size: 16px; line-height: 1.8; color: #434655; overflow-wrap: anywhere; }
+.article-prose > :first-child { margin-top: 0 !important; }
+
+/* Netralkan inline style hasil copy-paste Google Docs / Word */
+.article-prose span:not(.highlight):not(.badge-disruptor),
+.article-prose font {
+  font-family: inherit !important; font-size: inherit !important; color: inherit !important;
+  background-color: transparent !important; white-space: normal !important;
+}
+.article-prose p,
+.article-prose li { line-height: 1.8 !important; }
+.article-prose p { margin: 0 0 1rem !important; text-align: left !important; }
+.article-prose p:empty { display: none; }
+
+.article-prose h2 {
+  font-family: "Plus Jakarta Sans", sans-serif; font-size: 22px; line-height: 1.35; font-weight: 700;
+  letter-spacing: -0.02em; color: #191c1e; margin: 2.25rem 0 1rem; padding-top: 1.75rem;
+  border-top: 1px solid #e2e8f0;
+}
+.article-prose > h2:first-child { border-top: 0; padding-top: 0; }
+.article-prose h3 {
+  font-family: "Plus Jakarta Sans", sans-serif; font-size: 18px; line-height: 1.45; font-weight: 700;
+  color: #191c1e; margin: 1.75rem 0 0.75rem;
+}
+.article-prose h4 {
+  font-family: "Plus Jakarta Sans", sans-serif; font-size: 16px; line-height: 1.5; font-weight: 700;
+  color: #191c1e; margin: 1.5rem 0 0.5rem;
+}
+.article-prose h2 *, .article-prose h3 *, .article-prose h4 * { font-weight: inherit !important; font-style: normal !important; }
+@media (min-width: 768px) {
+  .article-prose h2 { font-size: 26px; }
+  .article-prose h3 { font-size: 20px; }
+}
+
+.article-prose strong, .article-prose b { color: #191c1e; font-weight: 600; }
+.article-prose em, .article-prose i:not(.bi) { font-style: italic; }
+
+.article-prose ul, .article-prose ol { margin: 0 0 1.25rem; padding-left: 1.5rem; }
+.article-prose ul { list-style: disc; }
+.article-prose ol { list-style: decimal; }
+.article-prose li { margin: 0.35rem 0; padding-left: 0.25rem; }
+.article-prose li::marker { color: #0037b0; font-weight: 700; }
+.article-prose li > p { margin: 0 !important; }
+
+.article-prose a { color: #0037b0; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; transition: color 0.2s; }
+.article-prose a:hover { color: #0a58ca; }
+.article-prose a.internal-link { text-decoration: none; border-bottom: 2px solid #ffc107; padding-bottom: 1px; }
+.article-prose .internal-link-paragraph {
+  display: block; margin: 1.25rem 0 !important; padding: 0.9rem 1rem; border-radius: 0.75rem;
+  background: #eff6ff; border-left: 4px solid #0037b0;
+}
+
+.article-prose img { max-width: 100%; height: auto; border-radius: 0.75rem; margin: 1.25rem 0; }
+
+.article-prose .highlight {
+  background: #fff3cd; padding: 2px 5px; border-radius: 4px; font-weight: 600; color: #1e293b;
+}
+.article-prose .badge-disruptor {
+  display: inline-block; background: #1e293b; color: #ffc107; font-size: 10px; font-weight: 700;
+  letter-spacing: 1.2px; text-transform: uppercase; padding: 3px 9px; border-radius: 4px;
+  vertical-align: middle; margin: 0 3px; line-height: 1.6;
+}
+
+/* Quote */
+.article-prose blockquote,
+.article-prose .blockquote-box {
+  position: relative; margin: 1.75rem 0; padding: 1.5rem 1.75rem; border-radius: 1rem; overflow: hidden;
+  background: linear-gradient(90deg, #1e293b, #0037b0); color: #fff; box-shadow: 0 10px 25px -10px rgba(0, 55, 176, 0.45);
+}
+.article-prose blockquote::after {
+  content: "format_quote"; font-family: "Material Symbols Outlined"; font-size: 80px; line-height: 1;
+  position: absolute; right: -0.25rem; bottom: -0.75rem; color: rgba(255, 255, 255, 0.1); pointer-events: none;
+}
+.article-prose blockquote p,
+.article-prose .blockquote-text {
+  position: relative; z-index: 1; margin: 0 !important; font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 18px; line-height: 1.6 !important; font-style: italic; font-weight: 600; color: #fff;
+}
+.article-prose blockquote cite {
+  position: relative; z-index: 1; display: flex; align-items: center; gap: 0.75rem; margin-top: 0.9rem;
+  font-style: normal; font-size: 13px; font-weight: 700; color: #fff;
+}
+.article-prose blockquote cite::before { content: ""; width: 2rem; height: 2px; background: #ffc107; }
+
+/* Tabel */
+.article-prose table { width: 100%; border-collapse: collapse; margin: 1.25rem 0; font-size: 14px; display: block; overflow-x: auto; }
+.article-prose th, .article-prose td { border: 1px solid #e2e8f0; padding: 0.6rem 0.8rem; text-align: left; vertical-align: top; }
+.article-prose th, .article-prose thead td { background: #eff6ff; color: #0037b0; font-weight: 700; }
+
+/* Gambar H2 dari editor */
+.article-prose .h2-image-container, .article-prose .h2-watermark-container { position: relative; display: block; overflow: hidden; border-radius: 0.75rem; margin: 1rem 0 1.5rem; line-height: 0; }
+.article-prose .h2-image-container img, .article-prose .h2-watermark-container img { width: 100%; margin: 0; pointer-events: none; -webkit-user-drag: none; }
+
+/* ---------- Tags ---------- */
+.post-tags-area { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid #e2e8f0; }
+.post-tags-area:empty { display: none; }
+.post-tags-area .tags-color {
+  display: inline-flex; align-items: center; padding: 0.25rem 0.8rem; border-radius: 9999px; background: #f2f4f6;
+  color: #434655; font-family: Inter, sans-serif; font-size: 12px; font-weight: 500; text-decoration: none; transition: all 0.2s;
+}
+.post-tags-area .tags-color::before { content: "#"; }
+.post-tags-area .tags-color:hover { background: #eff6ff; color: #0037b0; }
+
+/* ---------- FAQ ---------- */
+.faq-item summary { list-style: none; }
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item[open] .faq-icon { transform: rotate(45deg); }
+
+/* Buang <br> kosong di antara paragraf (sisa copy-paste Google Docs) */
+.article-prose > br,
+.article-prose > span > br,
+.article-prose p + br,
+.article-prose br + br { display: none; }
+.article-prose p:has(> br:only-child),
+.article-prose p:has(> span:only-child > br:only-child) { display: none; }
+
+/* Paragraf tebal yang dipakai sebagai judul bagian (dideteksi oleh article-new.js) */
+.article-prose p.prose-subheading {
+  font-family: "Plus Jakarta Sans", sans-serif; font-size: 19px; line-height: 1.4 !important; color: #191c1e;
+  margin: 1.75rem 0 0.75rem !important;
+}
