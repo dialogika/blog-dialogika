@@ -371,3 +371,30 @@ Versi komponen (tanpa Tailwind) dari header baru, dipakai di halaman arsip dan 4
 **File:** `assets/css/dialogika-archive.css`, `assets/js/archive.js`
 
 Data dibaca dari `assets/data/articles.json`. Fitur: cari + highlight, filter kategori + jumlah, urut Terbaru/Terlama/A-Z, paginasi 9/halaman, state di URL (`?q=&kategori=&urut=&hal=`). Field opsional `author` dan `readTime` akan tampil di kartu.
+
+---
+
+## Generator Artikel (tampilan terbaru)
+
+Ada dua cara membuat artikel baru. Keduanya memakai modul yang sama (`admin/js/article-builder.js` + `admin/template/blog-template.html`), jadi hasilnya identik dan selalu mengikuti tampilan terbaru.
+
+### 1. Lewat admin (untuk penulis)
+
+1. Jalankan server lokal dari root repo (misal `python -m http.server 8000`), buka `http://localhost:8000/admin/`.
+2. Isi form, klik **Generate HTML** → **Preview** untuk cek.
+3. **Download HTML** → simpan sebagai `blog/<slug>.html`.
+4. **Download articles.json** → timpa `assets/data/articles.json`. Langkah ini membuat artikel muncul di beranda, arsip, halaman kategori, dan "Artikel Terkait".
+5. Commit & push kedua file.
+
+> Kalau admin dibuka langsung dari file (tanpa server), articles.json tidak bisa dibaca otomatis. Pakai tombol **Salin entri** lalu tempel di paling atas daftar `articles.json`.
+
+### 2. Lewat CLI (untuk developer)
+
+```bash
+node scripts/generate-article.js --contoh          # buat artikel-baru.json sebagai contoh
+node scripts/generate-article.js artikel-baru.json # tulis blog/<slug>.html + update articles.json
+```
+
+Opsi: `--dry-run` (hanya cek), `--force` (timpa HTML yang sudah ada), `--no-json` (tanpa update articles.json). Isi artikel bisa ditulis di `contentHtml` atau di file terpisah lewat `contentFile`.
+
+Kalau desain artikel berubah, cukup ubah `admin/template/blog-template.html`. Artikel baru dari kedua generator otomatis ikut. Artikel format lama bisa dikonversi ke tampilan baru dengan `node scripts/apply-new-template.js`.
