@@ -52,6 +52,18 @@
      * Strip all HTML tags and return plain text.
      */
     stripHtml: function (html) {
+      /* Dipakai juga di Node (scripts/generate-article.js) yang tidak punya DOM */
+      if (typeof document === "undefined") {
+        return String(html || "")
+          .replace(/<(script|style)[\s\S]*?<\/\1>/gi, " ")
+          .replace(/<[^>]*>/g, " ")
+          .replace(/&nbsp;/g, " ")
+          .replace(/&amp;/g, "&")
+          .replace(/&lt;/g, "<")
+          .replace(/&gt;/g, ">")
+          .replace(/&quot;/g, '"')
+          .replace(/&#39;/g, "'");
+      }
       var tmp = document.createElement("div");
       tmp.innerHTML = html;
       return tmp.textContent || tmp.innerText || "";

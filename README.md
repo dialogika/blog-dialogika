@@ -341,3 +341,60 @@ Halaman ini juga menyisipkan beberapa **JSON-LD Schema** di `<head>`:
 - Warna tema konsisten dengan dokumentasi sebelumnya: `#1a3266` (biru navy/primary) dan `#f0a500` (kuning/accent).
 - Beberapa class (`.highlight`, `.badge-disruptor`) **identik** dengan yang ada di HTML Blog Generator (editor admin) — artinya konten yang ditulis di editor admin akan otomatis tampil sesuai style ini saat dipublikasikan di halaman frontend.
 - Semua animasi (FAQ, toast, clap, WhatsApp bubble) menggunakan CSS `transition`/`@keyframes` dan sedikit JavaScript vanilla — tidak ada dependency library animasi eksternal.
+
+---
+
+## Header Baru (`<dialogika-header>`) & Halaman Arsip
+
+**File:** `assets/css/dialogika-header.css`, `assets/js/dialogika-header.js`
+
+Versi komponen (tanpa Tailwind) dari header baru, dipakai di halaman arsip dan 4 halaman kategori. Artikel, beranda, dan `admin/template/blog-template.html` memakai header yang sama versi Tailwind inline. Menu komponen diubah di bagian *Data menu* `dialogika-header.js`.
+
+```html
+<!-- di <head> (lihat blog/index.html untuk link font lengkap) -->
+<link rel="stylesheet" href="../assets/css/dialogika-header.css" />
+
+<!-- awal <body> -->
+<dialogika-header active="artikel"></dialogika-header>
+<script src="../assets/js/dialogika-header.js"></script>
+```
+
+- `active="home"` / `active="artikel"` menandai menu aktif.
+- Header sticky; di bawah 1024px menu pindah ke drawer.
+- Search mengarah ke `blog/index.html?q=...`.
+- Icon Material baru → tambahkan namanya ke parameter `icon_names` (urut abjad).
+
+**Footer tetap footer lama:** `<main-footer></main-footer>` + `assets/js/headerfooter.js`.
+
+### Halaman Arsip (`blog/index.html`)
+
+**File:** `assets/css/dialogika-archive.css`, `assets/js/archive.js`
+
+Data dibaca dari `assets/data/articles.json`. Fitur: cari + highlight, filter kategori + jumlah, urut Terbaru/Terlama/A-Z, paginasi 9/halaman, state di URL (`?q=&kategori=&urut=&hal=`). Field opsional `author` dan `readTime` akan tampil di kartu.
+
+---
+
+## Generator Artikel (tampilan terbaru)
+
+Ada dua cara membuat artikel baru. Keduanya memakai modul yang sama (`admin/js/article-builder.js` + `admin/template/blog-template.html`), jadi hasilnya identik dan selalu mengikuti tampilan terbaru.
+
+### 1. Lewat admin (untuk penulis)
+
+1. Jalankan server lokal dari root repo (misal `python -m http.server 8000`), buka `http://localhost:8000/admin/`.
+2. Isi form, klik **Generate HTML** → **Preview** untuk cek.
+3. **Download HTML** → simpan sebagai `blog/<slug>.html`.
+4. **Download articles.json** → timpa `assets/data/articles.json`. Langkah ini membuat artikel muncul di beranda, arsip, halaman kategori, dan "Artikel Terkait".
+5. Commit & push kedua file.
+
+> Kalau admin dibuka langsung dari file (tanpa server), articles.json tidak bisa dibaca otomatis. Pakai tombol **Salin entri** lalu tempel di paling atas daftar `articles.json`.
+
+### 2. Lewat CLI (untuk developer)
+
+```bash
+node scripts/generate-article.js --contoh          # buat artikel-baru.json sebagai contoh
+node scripts/generate-article.js artikel-baru.json # tulis blog/<slug>.html + update articles.json
+```
+
+Opsi: `--dry-run` (hanya cek), `--force` (timpa HTML yang sudah ada), `--no-json` (tanpa update articles.json). Isi artikel bisa ditulis di `contentHtml` atau di file terpisah lewat `contentFile`.
+
+Kalau desain artikel berubah, cukup ubah `admin/template/blog-template.html`. Artikel baru dari kedua generator otomatis ikut. Artikel format lama bisa dikonversi ke tampilan baru dengan `node scripts/apply-new-template.js`.

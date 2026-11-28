@@ -233,6 +233,12 @@
   articleDataPromise
     .then(function (articles) {
       var posts = (articles || [])
+        .map(function (p) {
+          if (p && typeof p.url === "string" && p.url.indexOf("/blog-dialogika/blog/") === 0) {
+            p.url = p.url.replace("/blog-dialogika/blog/", "/blog/");
+          }
+          return p;
+        })
         .filter(function (p) { return p.slug !== CURRENT_SLUG; })
         .sort(function (a, b) { return parseDate(b.date) - parseDate(a.date); });
       if (!posts.length) throw new Error("empty");

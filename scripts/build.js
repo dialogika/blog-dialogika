@@ -101,7 +101,7 @@ function addTemplateToArticle(filePath, meta) {
 ensureDir(DATA_DIR);
 
 const files = fs.readdirSync(BLOG_DIR)
-  .filter(f => f.endsWith('.html') && f !== 'data.html');
+  .filter(f => f.endsWith('.html') && f !== 'data.html' && f !== 'index.html'); // index.html = halaman arsip
 
 const articles = [];
 let wrapped = 0;

@@ -243,6 +243,28 @@
       }
 
       /* ---- Action bar ---- */
+      .publish-steps {
+        margin: -8px 0 24px;
+        padding: 14px 18px;
+        border-radius: 10px;
+        background: #f0f5ff;
+        border: 1px solid #d6e2ff;
+        font-size: 14px;
+      }
+      .publish-steps h6 { font-weight: 700; color: #0037b0; margin-bottom: 8px; }
+      .publish-steps ol { margin: 0 0 8px; padding-left: 20px; }
+      .publish-steps li { margin-bottom: 4px; }
+      .publish-steps summary { cursor: pointer; color: #0037b0; font-weight: 600; }
+      .publish-steps pre {
+        background: #fff;
+        border: 1px solid #e0e7ff;
+        border-radius: 8px;
+        padding: 10px;
+        margin: 8px 0;
+        font-size: 12px;
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
       .action-bar {
         background: #fff;
         border: 1px solid #e0e7ff;
@@ -587,6 +609,15 @@
           >
             <i class="bi bi-download me-2"></i>Download HTML
           </button>
+          <button
+            class="btn btn-secondary btn-lg"
+            id="btn-download-json"
+            type="button"
+            disabled
+            title="articles.json yang sudah berisi artikel ini (untuk beranda, arsip & kategori)"
+          >
+            <i class="bi bi-filetype-json me-2"></i>Download articles.json
+          </button>
           <select class="form-select" id="field-status" style="max-width: 170px">
             <option value="published">Langsung Publish</option>
             <option value="draft">Simpan sebagai Draft</option>
@@ -602,6 +633,35 @@
           <div id="status-alert" class="alert mt-0 mb-0 flex-grow-1"></div>
         </div>
       </div>
+
+      <!-- Langkah selanjutnya (muncul setelah Generate) -->
+        <div id="publish-steps" class="publish-steps" style="display: none">
+          <h6><i class="bi bi-list-check me-2"></i>Langkah publish artikel</h6>
+          <ol>
+            <li>
+              <strong>Cara cepat:</strong> klik <strong>Publish ke Firebase</strong>
+              (perlu login). Artikel langsung muncul di website.
+            </li>
+            <li>
+              <strong>Cara statis:</strong> klik <strong>Download HTML</strong>, simpan
+              sebagai <code>blog/<span class="js-slug">slug</span>.html</code>.
+            </li>
+            <li>
+              Lalu klik <strong>Download articles.json</strong> dan
+              <strong>timpa</strong> file <code>assets/data/articles.json</code>.
+              Tanpa langkah ini artikel statis tidak muncul di beranda, arsip,
+              halaman kategori, dan "Artikel Terkait".
+            </li>
+            <li>Commit &amp; push file yang diunduh.</li>
+          </ol>
+          <details>
+            <summary>Lihat / salin entri articles.json</summary>
+            <pre id="json-entry-preview"></pre>
+            <button class="btn btn-outline-primary btn-sm" id="btn-copy-entry" type="button">
+              <i class="bi bi-clipboard me-1"></i>Salin entri
+            </button>
+          </details>
+        </div>
     </div>
 
     <!-- ========== PREVIEW MODAL ========== -->
@@ -719,6 +779,7 @@
     <script src="js/editor.js"></script>
     <script src="js/schema-generator.js"></script>
     <script src="js/content-renderer.js"></script>
+    <script src="js/article-builder.js"></script>
     <script src="js/template-processor.js"></script>
     <script src="js/download-handler.js"></script>
     <script src="js/app.js"></script>
