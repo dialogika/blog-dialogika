@@ -20,6 +20,7 @@
   var Download = BlogGenerator.Download;
 
   var generatedHtml = null;
+  var lastData = null;
 
   /**
    * Collect all form data into a single object.
@@ -34,6 +35,9 @@
     var author = document.getElementById("field-author").value.trim() || Config.defaultAuthor;
     var category = document.getElementById("field-category").value.trim();
     var publishedDate = document.getElementById("field-date").value;
+    if (!publishedDate) {
+      publishedDate = new Date().toISOString().slice(0, 10);
+    }
     var featuredImageUrl = document.getElementById("field-featured-image").value.trim();
     var cheatsheetPdf = document.getElementById("field-cheatsheet-pdf").value.trim();
 
@@ -203,6 +207,7 @@
         TemplateProcessor.load()
           .then(function (template) {
             generatedHtml = TemplateProcessor.process(template, data);
+            lastData = data;
 
             /* Enable download button */
             var downloadBtn = document.getElementById("btn-download");
@@ -222,6 +227,19 @@
 
             /* Store slug for download */
             if (downloadBtn) downloadBtn.setAttribute("data-slug", slug);
+
+            /* Publish button menunggu hasil generate */
+            var publishBtn = document.getElementById("btn-publish");
+            if (publishBtn && window.BlogDB && BlogDB.isConfigured()) {
+              publishBtn.disabled = false;
+            }
+
+            /* Beri tahu modul lain (admin-publish) */
+            document.dispatchEvent(
+              new CustomEvent("blog:generated", {
+                detail: { slug: slug, data: data },
+              })
+            );
 
             /* Show success alert */
             var alertBox = document.getElementById("status-alert");
@@ -285,6 +303,17 @@
       });
     }
   }
+
+  /* API untuk modul lain (publish ke Firebase, dsb.) */
+  BlogGenerator.App = {
+    getGeneratedHtml: function () {
+      return generatedHtml;
+    },
+    getLastData: function () {
+      return lastData;
+    },
+    collectFormData: collectFormData,
+  };
 
   /* Run on DOM ready */
   if (document.readyState === "loading") {

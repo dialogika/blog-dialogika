@@ -274,11 +274,19 @@
     render();
   }
 
+  function loadArticleData() {
+    if (window.ArticlesSource) {
+      return window.ArticlesSource.load("../assets/data/articles.json");
+    }
+    return fetch("../assets/data/articles.json").then(function (r) {
+      return r.json();
+    });
+  }
+
   function init() {
-    fetch("../assets/data/articles.json")
-      .then(function (r) { return r.json(); })
+    loadArticleData()
       .then(function (articles) {
-        allArticles = articles;
+        allArticles = articles || [];
         renderFilters();
         render();
       })

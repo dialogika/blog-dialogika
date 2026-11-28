@@ -79,7 +79,7 @@
      * "2023-08-15" → "15 Agustus 2023"
      */
     formatDate: function (isoString) {
-      if (!isoString) return "";
+      if (!isoString || isoString.indexOf("-") === -1) return "";
       var months = [
         "Januari", "Februari", "Maret", "April", "Mei", "Juni",
         "Juli", "Agustus", "September", "Oktober", "November", "Desember",

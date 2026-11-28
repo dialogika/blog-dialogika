@@ -1,0 +1,28 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    // Artikel blog.
+    // - Publik hanya bisa membaca artikel berstatus "published".
+    // - Admin yang login bisa membaca draft dan menulis/menghapus.
+    match /articles/{slug} {
+      allow read: if signedIn()
+        || (resource != null && resource.data.status == 'published');
+      allow create, update, delete: if signedIn();
+    }
+
+    // Data penulis (termasuk email) hanya untuk admin yang login.
+    match /authors/{authorId} {
+      allow read, write: if signedIn();
+    }
+
+    // Tolak akses lain secara default.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -530,11 +530,17 @@
       });
   }
 
+  function loadArticleData() {
+    if (window.ArticlesSource) {
+      return window.ArticlesSource.load("assets/data/articles.json");
+    }
+    return fetch("assets/data/articles.json").then(function (response) {
+      return response.json();
+    });
+  }
+
   function initDynamicContent() {
-    fetch("assets/data/articles.json")
-      .then(function (response) {
-        return response.json();
-      })
+    loadArticleData()
       .then(function (articles) {
         if (!articles || !articles.length) return;
         renderHeroPosts(articles);

@@ -46,6 +46,26 @@
       .admin-navbar .brand span {
         color: var(--accent);
       }
+      .admin-nav-link {
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 13px;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+      .admin-nav-link:hover {
+        color: #fff;
+      }
+      .admin-auth-label {
+        color: #cbd5e1;
+        font-size: 12px;
+        max-width: 180px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .firebase-warning {
+        border-left: 4px solid var(--accent);
+      }
 
       /* ---- Section cards ---- */
       .section-card {
@@ -283,7 +303,28 @@
       <div class="container">
         <div class="d-flex justify-content-between align-items-center">
           <a class="brand" href="#">Dialogika <span>Blog Generator</span></a>
-          <span id="article-info"></span>
+          <div class="d-flex align-items-center gap-3">
+            <span id="article-info"></span>
+            <a class="admin-nav-link" href="articles.html">Kelola Artikel</a>
+            <a class="admin-nav-link" href="authors.html">Penulis</a>
+            <span id="auth-user" class="admin-auth-label"></span>
+            <button
+              class="btn btn-sm btn-outline-light"
+              id="btn-login"
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#loginModal"
+            >
+              <i class="bi bi-box-arrow-in-right me-1"></i>Login
+            </button>
+            <button
+              class="btn btn-sm btn-outline-light d-none"
+              id="btn-logout"
+              type="button"
+            >
+              <i class="bi bi-box-arrow-right me-1"></i>Logout
+            </button>
+          </div>
         </div>
       </div>
     </nav>
@@ -384,13 +425,13 @@
             <div class="row g-3">
               <div class="col-md-6">
                 <label class="form-label" for="field-author">Author</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="field-author"
-                  placeholder="Dialogika"
-                  value="Dialogika"
-                />
+                <select class="form-select" id="field-author">
+                  <option value="Dialogika" data-id="">Dialogika</option>
+                </select>
+                <div class="form-text">
+                  Daftar penulis diambil dari database.
+                  <a href="authors.html" target="_blank">Kelola penulis</a>.
+                </div>
               </div>
               <div class="col-md-6">
                 <label class="form-label" for="field-category">Category</label>
@@ -414,7 +455,17 @@
                   id="field-featured-image"
                   placeholder="https://images.unsplash.com/..."
                 />
-                <div class="form-text">Alt text otomatis mengikuti judul artikel.</div>
+                <input
+                  type="file"
+                  class="form-control mt-2"
+                  id="field-featured-image-file"
+                  accept="image/*"
+                />
+                <div class="form-text">
+                  Pilih file untuk upload ke Firebase Storage, atau isi URL manual.
+                  Alt text otomatis mengikuti judul artikel.
+                </div>
+                <div id="image-upload-status" class="small mt-1"></div>
               </div>
             </div>
           </div>
@@ -536,6 +587,18 @@
           >
             <i class="bi bi-download me-2"></i>Download HTML
           </button>
+          <select class="form-select" id="field-status" style="max-width: 170px">
+            <option value="published">Langsung Publish</option>
+            <option value="draft">Simpan sebagai Draft</option>
+          </select>
+          <button
+            class="btn btn-success btn-lg"
+            id="btn-publish"
+            type="button"
+            disabled
+          >
+            <i class="bi bi-cloud-arrow-up me-2"></i>Publish ke Firebase
+          </button>
           <div id="status-alert" class="alert mt-0 mb-0 flex-grow-1"></div>
         </div>
       </div>
@@ -579,8 +642,72 @@
       </div>
     </div>
 
+    <!-- ========== LOGIN MODAL ========== -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form id="login-form">
+            <div class="modal-header">
+              <h5 class="modal-title">
+                <i class="bi bi-shield-lock me-2"></i>Login Admin Dialogika
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label class="form-label" for="login-email">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="login-email"
+                  autocomplete="username"
+                  required
+                />
+              </div>
+              <div class="mb-2">
+                <label class="form-label" for="login-password">Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="login-password"
+                  autocomplete="current-password"
+                  required
+                />
+              </div>
+              <div id="login-error" class="text-danger small"></div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Batal
+              </button>
+              <button type="submit" class="btn btn-primary" id="login-submit">
+                <i class="bi bi-box-arrow-in-right me-1"></i>Login
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
+    <script src="../assets/js/firebase-config.js"></script>
+    <script src="../assets/js/firebase-client.js"></script>
 
     <!-- App Scripts (order matters) -->
     <script src="js/config.js"></script>
@@ -595,6 +722,7 @@
     <script src="js/template-processor.js"></script>
     <script src="js/download-handler.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/admin-publish.js"></script>
 
     <!-- Download from preview modal -->
     <script>

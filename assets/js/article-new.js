@@ -208,7 +208,10 @@
   // ---------- Artikel terkait & terbaru dari articles.json ----------
   var MONTHS = { jan: 0, feb: 1, mar: 2, apr: 3, mei: 4, may: 4, jun: 5, jul: 6, agu: 7, aug: 7, sep: 8, okt: 9, oct: 9, nov: 10, des: 11, dec: 11 };
   function parseDate(str) {
-    var p = String(str || "").trim().split(/\s+/);
+    var raw = String(str || "").trim();
+    var direct = new Date(raw);
+    if (!isNaN(direct.getTime())) return direct.getTime();
+    var p = raw.split(/\s+/);
     var mk = (p[1] || "").toLowerCase().slice(0, 3);
     return new Date(parseInt(p[2], 10) || 1970, MONTHS.hasOwnProperty(mk) ? MONTHS[mk] : 0, parseInt(p[0], 10) || 1).getTime();
   }
@@ -223,8 +226,11 @@
   var latest = $("latest-post-wrapper");
   if (!sidebar && !latest) return;
 
-  fetch(ARTICLES_JSON)
-    .then(function (r) { return r.json(); })
+  var articleDataPromise = window.ArticlesSource
+    ? window.ArticlesSource.load(ARTICLES_JSON)
+    : fetch(ARTICLES_JSON).then(function (r) { return r.json(); });
+
+  articleDataPromise
     .then(function (articles) {
       var posts = (articles || [])
         .filter(function (p) { return p.slug !== CURRENT_SLUG; })

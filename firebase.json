@@ -1,0 +1,44 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      ".firebaserc",
+      "**/.*",
+      "**/node_modules/**",
+      "scripts/**",
+      "blog/blog_backup/**",
+      "assets/data/articles_backup.json",
+      "**/*.md",
+      "package.json",
+      "package-lock.json",
+      "serviceAccount*.json",
+      "*.rules",
+      "firestore.indexes.json"
+    ],
+    "rewrites": [
+      {
+        "source": "/blog/*.html",
+        "destination": "/blog/article.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(jpg|jpeg|png|webp|gif|svg|woff|woff2|ttf|css|js)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=3600"
+          }
+        ]
+      }
+    ]
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  }
+}

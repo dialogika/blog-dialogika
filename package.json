@@ -1,0 +1,19 @@
+{
+  "name": "blog-dialogika",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Blog Dialogika — static site + Firebase (Firestore/Storage/Auth/Hosting)",
+  "scripts": {
+    "import:articles": "node scripts/import-to-firestore.js",
+    "import:articles:dry": "node scripts/import-to-firestore.js --dry-run",
+    "create:author": "node scripts/create-author-account.js",
+    "deploy": "firebase deploy",
+    "deploy:hosting": "firebase deploy --only hosting",
+    "deploy:rules": "firebase deploy --only firestore:rules,storage",
+    "serve": "firebase emulators:start --only hosting"
+  },
+  "devDependencies": {
+    "firebase-admin": "^12.7.0",
+    "firebase-tools": "^13.29.1"
+  }
+}
