@@ -83,12 +83,6 @@ function addTemplateToArticle(filePath, meta) {
 <link rel="stylesheet" href="../assets/css/vendor/bootstrap-icons/bootstrap-icons.css" />
 <link rel="stylesheet" href="../assets/css/style.css" />
 <link rel="stylesheet" href="../assets/css/homepage.css" />
-<link rel="stylesheet" href="../assets/css/main-footer.css" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0..1,0&icon_names=arrow_forward,article,calendar_month,call,chat,chevron_left,chevron_right,close,event_available,expand_more,groups,handshake,help,home,location_on,mail,menu,menu_book,notifications,person,refresh,search,sort,storefront,wb_sunny&display=block" />
-<link rel="stylesheet" href="../assets/css/dialogika-header.css" />
 </head>`);
 
     const headerTmpl = fs.readFileSync(path.join(TEMPLATE_DIR, 'header.html'), 'utf-8');

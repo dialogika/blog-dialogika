@@ -57,27 +57,27 @@
      */
     renderFaq: function (faqs) {
       if (!faqs || faqs.length === 0) return "";
+      var esc = BlogGenerator.Utils.escapeHtml;
 
-      var html = '<div class="faq-section">\n';
-      html += '                      <div class="faq-title">\n';
-      html += "                        Pertanyaan yang Sering Diajukan\n";
-      html += "                      </div>\n\n";
+      var html = '<section class="faq-section bg-surface-card p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-sm" id="faq">\n';
+      html += '                <h2 class="font-headline-sm text-headline-sm font-bold text-on-surface flex items-center gap-2">' +
+        '<span class="material-symbols-outlined text-primary text-[20px]">quiz</span><span>Pertanyaan yang Sering Diajukan</span></h2>\n';
+      html += '                <div class="flex flex-col gap-2">\n';
 
       faqs.forEach(function (faq) {
-        html += '                      <div class="faq-item">\n';
-        html += '                        <button class="faq-question" onclick="toggleFaq(this)">\n';
-        html += "                          <span>" + BlogGenerator.Utils.escapeHtml(faq.question) + "</span>\n";
-        html += '                          <span class="faq-icon">+</span>\n';
-        html += "                        </button>\n";
-        html += '                        <div class="faq-answer">\n';
-        html += "                          <p>\n";
-        html += "                            " + BlogGenerator.Utils.escapeHtml(faq.answer) + "\n";
-        html += "                          </p>\n";
-        html += "                        </div>\n";
-        html += "                      </div>\n\n";
+        html += '                  <details class="faq-item group rounded-xl bg-surface-container-low">\n';
+        html += '                    <summary class="faq-question flex items-center justify-between gap-3 p-space-md cursor-pointer font-headline-sm text-headline-sm font-semibold text-on-surface hover:text-primary">\n';
+        html += "                      <span>" + esc(faq.question) + "</span>\n";
+        html += '                      <span class="faq-icon material-symbols-outlined text-primary transition-transform">add</span>\n';
+        html += "                    </summary>\n";
+        html += '                    <div class="faq-answer px-space-md pb-space-md font-body-default text-body-default text-on-surface-variant">\n';
+        html += "                      <p>" + esc(faq.answer) + "</p>\n";
+        html += "                    </div>\n";
+        html += "                  </details>\n";
       });
 
-      html += "                    </div>";
+      html += "                </div>\n";
+      html += "              </section>";
       return html;
     },
 
@@ -88,24 +88,30 @@
      */
     renderSources: function (sources) {
       if (!sources || sources.length === 0) return "";
+      var esc = BlogGenerator.Utils.escapeHtml;
 
-      var html = '<div class="sources-area section-space--pt_60">\n';
-      html += '                      <div class="section-title mb-30"><h3 class="title">Sources</h3></div>\n';
-      html += '                      <div class="sources-list-wrap">\n';
+      var html = '<section class="sources-area bg-surface-card p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-sm" id="referensi">\n';
+      html += '                <h2 class="font-headline-sm text-headline-sm font-bold text-on-surface flex items-center gap-2">' +
+        '<span class="material-symbols-outlined text-primary text-[20px]">menu_book</span><span>Sumber &amp; Referensi</span></h2>\n';
+      html += '                <ol class="sources-list-wrap flex flex-col gap-2 font-body-small text-body-small text-on-surface-variant">\n';
 
-      sources.forEach(function (src) {
-        var title = BlogGenerator.Utils.escapeHtml(src.title || src.url);
-        var url = BlogGenerator.Utils.escapeHtml(src.url);
-        html += '                        <a href="' + url + '" target="_blank" rel="noopener noreferrer" class="source-card-item">\n';
+      sources.forEach(function (src, i) {
+        var title = esc(src.title || src.url);
+        var url = esc(src.url);
+        var num = (i + 1 < 10 ? "0" : "") + (i + 1) + ".";
+        html += '                  <li><a class="source-card-item flex items-start gap-3 p-2.5 rounded-lg hover:bg-royal-blue-subtle hover:text-primary transition-colors" href="' + url + '" target="_blank" rel="noopener noreferrer">';
         if (src.thumbnail) {
-          html += '                          <div class="source-thumb"><img src="' + BlogGenerator.Utils.escapeHtml(src.thumbnail) + '" alt="' + title + '" loading="lazy" /></div>\n';
+          html += '<img src="' + esc(src.thumbnail) + '" alt="' + title + '" loading="lazy" class="w-12 h-12 rounded-lg object-cover shrink-0" />';
+        } else {
+          html += '<span class="text-outline-variant font-mono shrink-0">' + num + "</span>";
         }
-        html += '                          <div class="source-info"><h6>' + title + '</h6><span>' + url + '</span></div>\n';
-        html += '                        </a>\n';
+        html += '<span class="source-info flex flex-col min-w-0"><span class="font-semibold text-on-surface break-words">' + title + '</span>';
+        if (title !== url) html += '<span class="text-navy-muted text-[12px] break-all">' + url + "</span>";
+        html += '</span><span class="material-symbols-outlined text-[16px] ml-auto shrink-0">open_in_new</span></a></li>\n';
       });
 
-      html += '                      </div>\n';
-      html += '                    </div>';
+      html += "                </ol>\n";
+      html += "              </section>";
       return html;
     },
 

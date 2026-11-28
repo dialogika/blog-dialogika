@@ -348,10 +348,10 @@ Halaman ini juga menyisipkan beberapa **JSON-LD Schema** di `<head>`:
 
 **File:** `assets/css/dialogika-header.css`, `assets/js/dialogika-header.js`
 
-Dipakai di semua halaman (beranda, 4 kategori, arsip, semua artikel, dan `admin/template/blog-template.html`). Menu cukup diubah di satu tempat: bagian *Data menu* di `dialogika-header.js`.
+Versi komponen (tanpa Tailwind) dari header baru, dipakai di halaman arsip dan 4 halaman kategori. Artikel, beranda, dan `admin/template/blog-template.html` memakai header yang sama versi Tailwind inline. Menu komponen diubah di bagian *Data menu* `dialogika-header.js`.
 
 ```html
-<!-- di <head> (lihat admin/template/blog-template.html untuk link font lengkap) -->
+<!-- di <head> (lihat blog/index.html untuk link font lengkap) -->
 <link rel="stylesheet" href="../assets/css/dialogika-header.css" />
 
 <!-- awal <body> -->
