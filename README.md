@@ -341,3 +341,33 @@ Halaman ini juga menyisipkan beberapa **JSON-LD Schema** di `<head>`:
 - Warna tema konsisten dengan dokumentasi sebelumnya: `#1a3266` (biru navy/primary) dan `#f0a500` (kuning/accent).
 - Beberapa class (`.highlight`, `.badge-disruptor`) **identik** dengan yang ada di HTML Blog Generator (editor admin) — artinya konten yang ditulis di editor admin akan otomatis tampil sesuai style ini saat dipublikasikan di halaman frontend.
 - Semua animasi (FAQ, toast, clap, WhatsApp bubble) menggunakan CSS `transition`/`@keyframes` dan sedikit JavaScript vanilla — tidak ada dependency library animasi eksternal.
+
+---
+
+## Header Baru (`<dialogika-header>`) & Halaman Arsip
+
+**File:** `assets/css/dialogika-header.css`, `assets/js/dialogika-header.js`
+
+Dipakai di semua halaman (beranda, 4 kategori, arsip, semua artikel, dan `admin/template/blog-template.html`). Menu cukup diubah di satu tempat: bagian *Data menu* di `dialogika-header.js`.
+
+```html
+<!-- di <head> (lihat admin/template/blog-template.html untuk link font lengkap) -->
+<link rel="stylesheet" href="../assets/css/dialogika-header.css" />
+
+<!-- awal <body> -->
+<dialogika-header active="artikel"></dialogika-header>
+<script src="../assets/js/dialogika-header.js"></script>
+```
+
+- `active="home"` / `active="artikel"` menandai menu aktif.
+- Header sticky; di bawah 1024px menu pindah ke drawer.
+- Search mengarah ke `blog/index.html?q=...`.
+- Icon Material baru → tambahkan namanya ke parameter `icon_names` (urut abjad).
+
+**Footer tetap footer lama:** `<main-footer></main-footer>` + `assets/js/headerfooter.js`.
+
+### Halaman Arsip (`blog/index.html`)
+
+**File:** `assets/css/dialogika-archive.css`, `assets/js/archive.js`
+
+Data dibaca dari `assets/data/articles.json`. Fitur: cari + highlight, filter kategori + jumlah, urut Terbaru/Terlama/A-Z, paginasi 9/halaman, state di URL (`?q=&kategori=&urut=&hal=`). Field opsional `author` dan `readTime` akan tampil di kartu.
