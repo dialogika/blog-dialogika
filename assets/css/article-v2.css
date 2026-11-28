@@ -1,0 +1,280 @@
+/*
+ * Tampilan isi artikel (UI v2) — dipakai oleh semua halaman detail artikel.
+ * Template: admin/template/blog-template.html  |  Migrasi: scripts/apply-new-template.js
+ *
+ * Isi artikel berasal dari Google Docs dan membawa banyak style inline
+ * (font Times New Roman, ukuran 11–12pt, warna hitam, margin). Aturan di bawah
+ * menyeragamkan TAMPILAN-nya saja; teks/isi artikel tidak diubah.
+ */
+
+/* ---------- Progress bar baca ---------- */
+#dialogika-reading-progress {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #0037b0, #ffc107);
+  transition: width 90ms ease-out;
+}
+
+/* ---------- Toast salin link ---------- */
+#copy-toast.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+/* ---------- Gambar featured + watermark ---------- */
+.watermark-container { position: relative; display: block; overflow: hidden; line-height: 0; }
+.watermark-container > img {
+  width: 100%;
+  max-height: 520px;
+  object-fit: cover;
+  display: block;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+.watermark-container::after {
+  content: "";
+  position: absolute;
+  top: -60px;
+  left: 16px;
+  z-index: 11;
+  width: 150px;
+  height: 180px;
+  background: url("../images/logo/logo-outlined.png") center / contain no-repeat;
+  pointer-events: none;
+}
+.watermark-container .whatsapp-watermark {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 12;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px 8px 8px;
+  border-radius: 999px;
+  background: #25d366;
+  color: #fff;
+  line-height: 1;
+  border: 2px solid rgba(255, 255, 255, .35);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .18);
+  animation: wa-bubble-pop 3.2s ease-in-out infinite;
+  transition: background .25s ease, transform .25s ease, box-shadow .25s ease;
+}
+.watermark-container .whatsapp-watermark:hover {
+  background: #1aab52;
+  transform: translateY(-4px) scale(1.04);
+  box-shadow: 0 10px 28px rgba(37, 211, 102, .45);
+  animation-play-state: paused;
+}
+.watermark-container .wa-icon-wrap { width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; }
+.watermark-container .wa-icon-wrap img { width: 18px; height: 18px; pointer-events: none; -webkit-user-drag: none; }
+.watermark-container .wa-number { font-size: 12px; font-weight: 800; letter-spacing: .3px; white-space: nowrap; }
+@keyframes wa-bubble-pop {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+@media (max-width: 640px) {
+  .watermark-container::after { top: -40px; width: 100px; height: 120px; }
+  .watermark-container .whatsapp-watermark { right: 10px; bottom: 10px; padding: 6px 10px 6px 6px; }
+  .watermark-container .wa-number { font-size: 11px; }
+}
+
+/* ---------- Isi artikel ---------- */
+.article-content {
+  counter-reset: dlg-h2;
+  color: #434655;
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  line-height: 1.85;
+  overflow-wrap: anywhere;
+}
+/* Seragamkan style inline dari Google Docs (font, ukuran, warna, latar) */
+.article-content :is(p, span, li, font, b, i, em, strong, u, td, th, div):not(.highlight) {
+  font-family: inherit !important;
+  font-size: inherit !important;
+  color: inherit !important;
+  background-color: transparent !important;
+  white-space: normal !important;
+  font-variant: normal !important;
+}
+.article-content.article-content :is(b, strong) { color: #191c1e !important; font-weight: 700; }
+.article-content p {
+  margin: 0 0 1.1em !important;
+  line-height: 1.85 !important;
+}
+.article-content p:empty,
+.article-content p:has(> br:only-child) { display: none; }
+.article-content > span > p:first-child,
+.article-content > p:first-child { margin-top: 0 !important; }
+
+.article-content h2 {
+  counter-increment: dlg-h2;
+  position: relative;
+  margin: 2.2em 0 .8em !important;
+  padding-top: 1.2em;
+  border-top: 1px solid #e2e8f0;
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-size: 24px !important;
+  line-height: 1.35 !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em;
+  color: #191c1e !important;
+  scroll-margin-top: 170px;
+}
+.article-content h2::before { content: "#" counter(dlg-h2) " "; color: #0037b0; }
+.article-content h2:first-child { margin-top: 0 !important; padding-top: 0; border-top: 0; }
+.article-content h2 *,
+.article-content h3 *,
+.article-content h4 * { font-family: inherit !important; font-size: inherit !important; font-weight: inherit !important; color: inherit !important; }
+.article-content h3 {
+  margin: 1.6em 0 .6em !important;
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-size: 20px !important;
+  line-height: 1.4 !important;
+  font-weight: 700 !important;
+  color: #191c1e !important;
+  scroll-margin-top: 170px;
+}
+.article-content h4 {
+  margin: 1.4em 0 .5em !important;
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  color: #191c1e !important;
+}
+
+.article-content ul,
+.article-content ol { margin: 0 0 1.2em !important; padding-left: 1.4em !important; }
+.article-content ul { list-style: disc; }
+.article-content ol { list-style: decimal; }
+.article-content li { margin: 0 0 .45em !important; padding-left: .2em; line-height: 1.8 !important; }
+.article-content li::marker { color: #0037b0; font-weight: 700; }
+.article-content li > p { margin: 0 !important; }
+
+.article-content img { max-width: 100%; height: auto; border-radius: 16px; margin: 1em auto; }
+.article-content hr { border: 0; border-top: 1px solid #e2e8f0; margin: 2em 0; }
+
+/* Tautan */
+.article-content a { color: #0037b0 !important; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.article-content a:hover { color: #0a58ca !important; }
+.article-content a.internal-link { text-decoration: none; border-bottom: 2px solid #ffc107; }
+.article-content.article-content .internal-link-paragraph {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35em;
+  align-items: baseline;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: #eff6ff;
+  border-left: 4px solid #0037b0;
+  font-weight: 600;
+  color: #1e40af !important;
+}
+
+/* Sorotan */
+.article-content .highlight {
+  background: #fff3cd !important;
+  color: #1e293b !important;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-family: inherit !important;
+  font-size: inherit !important;
+}
+
+/* Kutipan (blockquote-box) — gaya kotak kutipan navy seperti desain */
+.article-content blockquote,
+.article-content .blockquote-box {
+  position: relative;
+  overflow: hidden;
+  margin: 1.8em 0 !important;
+  padding: 28px 32px !important;
+  border: 0 !important;
+  border-radius: 18px;
+  background: linear-gradient(90deg, #1e293b, #0037b0);
+  color: #fff !important;
+  box-shadow: 0 10px 25px rgba(0, 55, 176, .18);
+}
+.article-content blockquote::after {
+  content: "\201D";
+  position: absolute;
+  right: 18px;
+  bottom: -40px;
+  font-family: Georgia, serif;
+  font-size: 160px;
+  line-height: 1;
+  color: rgba(255, 255, 255, .08);
+  pointer-events: none;
+}
+.article-content.article-content blockquote p,
+.article-content.article-content blockquote span,
+.article-content.article-content .blockquote-text {
+  position: relative;
+  z-index: 1;
+  margin: 0 !important;
+  color: #fff !important;
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-size: 19px !important;
+  line-height: 1.6 !important;
+  font-style: italic;
+  font-weight: 600;
+}
+.article-content blockquote cite {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  font-style: normal;
+  font-size: 13px;
+  font-weight: 700;
+  color: #b7c4ff !important;
+}
+.article-content blockquote cite::before { content: ""; width: 28px; height: 2px; background: #ffc107; }
+
+/* Tabel */
+.article-content table { width: 100%; margin: 1.5em 0 !important; border-collapse: separate; border-spacing: 0; border: 1px solid #e2e8f0; border-radius: 14px; overflow: hidden; font-size: 14px; display: block; overflow-x: auto; }
+.article-content.article-content th { background: #eff6ff; color: #191c1e !important; font-weight: 700; text-align: left; }
+.article-content th,
+.article-content td { padding: 10px 14px !important; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+.article-content tr:last-child td { border-bottom: 0; }
+
+/* ---------- Tags ---------- */
+.post-tags-area { display: flex; flex-wrap: wrap; gap: 8px; }
+.post-tags-area:empty { display: none; }
+.post-tags-area .tags-color {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #1e40af;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  text-decoration: none;
+  transition: background .2s ease, color .2s ease;
+}
+.post-tags-area .tags-color::before { content: "#"; opacity: .6; }
+.post-tags-area .tags-color:hover { background: #0037b0; color: #fff; }
+
+/* ---------- Key takeaways ---------- */
+.kt-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.kt-list li { position: relative; padding-left: 28px; line-height: 1.7; color: #434655; }
+.kt-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .3em;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #0037b0 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 12px no-repeat;
+}
+
+/* ---------- FAQ (details) ---------- */
+.faq-item > summary { list-style: none; }
+.faq-item > summary::-webkit-details-marker { display: none; }
+.faq-item[open] .faq-icon { transform: rotate(45deg); }
+
+/* ---------- Daftar isi (sidebar) ---------- */
+#toc-list a.active { background: #eff6ff; color: #0037b0; font-weight: 600; }
