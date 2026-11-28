@@ -14,108 +14,55 @@
   var FaqManager = BlogGenerator.FaqManager;
   var TakeawaysManager = BlogGenerator.TakeawaysManager;
   var SourcesManager = BlogGenerator.SourcesManager;
-  var Schema = BlogGenerator.Schema;
-  var ContentRenderer = BlogGenerator.ContentRenderer;
   var TemplateProcessor = BlogGenerator.TemplateProcessor;
   var Download = BlogGenerator.Download;
+  var Builder = BlogGenerator.ArticleBuilder;
 
   var generatedHtml = null;
+  var lastEntry = null; /* entri articles.json untuk artikel yang terakhir di-generate */
 
   /**
-   * Collect all form data into a single object.
+   * Baca semua isian form menjadi objek input untuk ArticleBuilder.
+   */
+  function readForm() {
+    function val(id) {
+      var el = document.getElementById(id);
+      return el ? el.value.trim() : "";
+    }
+    return {
+      title: val("field-title"),
+      metaDescription: val("field-meta-desc"),
+      keywords: val("field-meta-keywords"),
+      ogTitle: val("field-og-title"),
+      ogDescription: val("field-og-desc"),
+      ogImage: val("field-og-image"),
+      author: val("field-author"),
+      category: val("field-category"),
+      date: val("field-date"),
+      featuredImage: val("field-featured-image"),
+      cheatsheetPdf: val("field-cheatsheet-pdf"),
+      contentHtml: Editor.getContent(),
+      tags: TagManager.getTags(),
+      takeaways: TakeawaysManager.getItems(),
+      faqs: FaqManager.getFaqs(),
+      sources: SourcesManager.getSources(),
+    };
+  }
+
+  /**
+   * Validasi + bangun data template dan entri articles.json.
+   * Logika ada di article-builder.js (dipakai juga oleh CLI).
    */
   function collectFormData() {
-    var title = document.getElementById("field-title").value.trim();
-    var metaDesc = document.getElementById("field-meta-desc").value.trim();
-    var metaKeywords = document.getElementById("field-meta-keywords").value.trim();
-    var ogTitle = document.getElementById("field-og-title").value.trim() || title;
-    var ogDesc = document.getElementById("field-og-desc").value.trim() || metaDesc;
-    var ogImage = document.getElementById("field-og-image").value.trim();
-    var author = document.getElementById("field-author").value.trim() || Config.defaultAuthor;
-    var category = document.getElementById("field-category").value.trim();
-    var publishedDate = document.getElementById("field-date").value;
-    var featuredImageUrl = document.getElementById("field-featured-image").value.trim();
-    var cheatsheetPdf = document.getElementById("field-cheatsheet-pdf").value.trim();
-
-    if (!title) {
-      alert("Judul artikel wajib diisi!");
+    var input = readForm();
+    var error = Builder.validate(input);
+    if (error) {
+      alert(error);
       return null;
     }
-
-    /* Title dash validation: must contain " - " */
-    if (title.indexOf(" - ") === -1) {
-      alert('Judul harus mengandung format "Keyword - Theory" (dengan strip -).\nContoh: Cara Membuat Standup Comedy - Tips Menarik Penonton');
-      return null;
-    }
-
-    var slug = Utils.slugify(title);
-    var canonicalUrl = Config.baseUrl + slug;
-
-    var publishedDateIso = Utils.toIsoDateTime(publishedDate);
-    var publishedDateDisplay = Utils.formatDate(publishedDate);
-
-    var articleContent = Editor.getContent();
-    var tags = TagManager.getTags();
-    var faqs = FaqManager.getFaqs();
-    var takeaways = TakeawaysManager.getItems();
-    var sources = SourcesManager.getSources();
-
-    var articleJsonLd = Schema.generateArticleSchema({
-      title: title,
-      description: metaDesc,
-      image: featuredImageUrl,
-      publishedDateIso: publishedDateIso,
-      modifiedDateIso: publishedDateIso,
-      canonicalUrl: canonicalUrl,
-    });
-
-    var faqJsonLd = Schema.generateFaqSchema(faqs);
-    var faqJsonLdBlock = "";
-    if (faqJsonLd) {
-      faqJsonLdBlock =
-        '<script type="application/ld+json">\n' + faqJsonLd + "\n    </script>";
-    }
-
-    var breadcrumbJsonLd = Schema.generateBreadcrumbSchema(category, title);
-    var categoryUrl = Config.categoryUrls[category] || "#";
-    var tagsHtml = ContentRenderer.renderTags(tags, category, categoryUrl);
-    var takeawaysHtml = ContentRenderer.renderTakeaways(takeaways);
-    var faqHtml = ContentRenderer.renderFaq(faqs);
-    var sourcesHtml = ContentRenderer.renderSources(sources);
-
-    return {
-      PAGE_TITLE: Utils.escapeHtml(title),
-      META_DESCRIPTION: Utils.escapeHtml(metaDesc),
-      META_KEYWORDS: Utils.escapeHtml(metaKeywords),
-      CANONICAL_URL: Utils.escapeHtml(canonicalUrl),
-      OG_TITLE: Utils.escapeHtml(ogTitle),
-      OG_DESCRIPTION: Utils.escapeHtml(ogDesc),
-      OG_URL: Utils.escapeHtml(canonicalUrl),
-      OG_IMAGE: Utils.escapeHtml(ogImage),
-      TWITTER_TITLE: Utils.escapeHtml(ogTitle),
-      TWITTER_DESCRIPTION: Utils.escapeHtml(ogDesc),
-      TWITTER_IMAGE: Utils.escapeHtml(ogImage),
-      PUBLISHED_DATE_ISO: publishedDateIso,
-      MODIFIED_DATE_ISO: publishedDateIso,
-      ARTICLE_JSON_LD: articleJsonLd,
-      FAQ_JSON_LD_BLOCK: faqJsonLdBlock,
-      BREADCRUMB_JSON_LD: breadcrumbJsonLd,
-      FEATURED_IMAGE_URL: Utils.escapeHtml(featuredImageUrl),
-      FEATURED_IMAGE_ALT: Utils.escapeHtml(title),
-      CATEGORY: Utils.escapeHtml(category),
-      AUTHOR: Utils.escapeHtml(author),
-      PUBLISHED_DATE_DISPLAY: publishedDateDisplay,
-      ARTICLE_H1: Utils.escapeHtml(title),
-      ARTICLE_CONTENT: articleContent,
-      TAGS_HTML: tagsHtml,
-      KEY_TAKEAWAYS_HTML: takeawaysHtml,
-      FAQ_HTML: faqHtml,
-      SOURCES_HTML: sourcesHtml,
-      CHEATSHEET_URL: Utils.escapeHtml(cheatsheetPdf),
-      BREADCRUMB_CATEGORY: Utils.escapeHtml(category),
-      CATEGORY_URL: Utils.escapeHtml(categoryUrl),
-      SLUG: slug,
-    };
+    var result = Builder.build(input);
+    lastEntry = result.entry;
+    return result.data;
   }
 
   /**
@@ -132,6 +79,87 @@
     /* Show modal */
     var bsModal = new bootstrap.Modal(modal);
     bsModal.show();
+  }
+
+  /**
+   * Tampilkan panel "Langkah publish artikel" + preview entri JSON.
+   */
+  function showPublishSteps(entry) {
+    var box = document.getElementById("publish-steps");
+    if (!box || !entry) return;
+    box.querySelectorAll(".js-slug").forEach(function (el) {
+      el.textContent = entry.slug;
+    });
+    var pre = document.getElementById("json-entry-preview");
+    if (pre) pre.textContent = JSON.stringify(entry, null, 2);
+    box.style.display = "block";
+  }
+
+  /**
+   * Ambil articles.json terbaru, masukkan entri artikel ini, lalu download.
+   */
+  function downloadArticlesJson() {
+    if (!lastEntry) {
+      alert("Generate HTML terlebih dahulu!");
+      return;
+    }
+    fetch(Config.articlesJsonPath, { cache: "no-store" })
+      .then(function (res) {
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        return res.json();
+      })
+      .catch(function () {
+        /* Admin dibuka langsung dari file (file://) atau JSON tidak terbaca */
+        return null;
+      })
+      .then(function (current) {
+        if (!Array.isArray(current)) {
+          alert(
+            "articles.json tidak bisa dibaca otomatis (admin dibuka tanpa server lokal?).\n" +
+              "Gunakan tombol \"Salin entri\" lalu tempel entri tersebut di paling atas daftar assets/data/articles.json."
+          );
+          var details = document.querySelector("#publish-steps details");
+          if (details) details.open = true;
+          return;
+        }
+        var result = Builder.upsertIndex(current, lastEntry);
+        var blob = new Blob([Builder.stringifyIndex(result.list)], {
+          type: "application/json;charset=utf-8",
+        });
+        Download.trigger("articles.json", blob);
+        var alertBox = document.getElementById("status-alert");
+        if (alertBox) {
+          alertBox.className = "alert alert-success mt-3";
+          alertBox.innerHTML =
+            '<i class="bi bi-check-circle me-2"></i>articles.json di-download (' +
+            result.list.length +
+            " artikel, entri <strong>" +
+            lastEntry.slug +
+            "</strong> " +
+            (result.replaced ? "diperbarui" : "ditambahkan") +
+            "). Timpa file <code>assets/data/articles.json</code>.";
+          alertBox.style.display = "block";
+        }
+      });
+  }
+
+  function copyEntry() {
+    if (!lastEntry) return;
+    var text = JSON.stringify(lastEntry, null, 2) + ",";
+    var btn = document.getElementById("btn-copy-entry");
+    function done() {
+      if (btn) btn.innerHTML = '<i class="bi bi-check2 me-1"></i>Tersalin';
+      setTimeout(function () {
+        if (btn) btn.innerHTML = '<i class="bi bi-clipboard me-1"></i>Salin entri';
+      }, 1500);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () {
+        window.prompt("Salin entri berikut:", text);
+      });
+    } else {
+      window.prompt("Salin entri berikut:", text);
+    }
   }
 
   /**
@@ -223,6 +251,15 @@
             /* Store slug for download */
             if (downloadBtn) downloadBtn.setAttribute("data-slug", slug);
 
+            /* Aktifkan download articles.json + tampilkan langkah publish */
+            var jsonBtn = document.getElementById("btn-download-json");
+            if (jsonBtn) {
+              jsonBtn.disabled = false;
+              jsonBtn.classList.remove("btn-secondary");
+              jsonBtn.classList.add("btn-warning");
+            }
+            showPublishSteps(lastEntry);
+
             /* Show success alert */
             var alertBox = document.getElementById("status-alert");
             if (alertBox) {
@@ -271,6 +308,12 @@
         }
       });
     }
+
+    /* Download articles.json + salin entri */
+    var jsonBtn = document.getElementById("btn-download-json");
+    if (jsonBtn) jsonBtn.addEventListener("click", downloadArticlesJson);
+    var copyBtn = document.getElementById("btn-copy-entry");
+    if (copyBtn) copyBtn.addEventListener("click", copyEntry);
 
     /* Download button */
     var downloadBtn = document.getElementById("btn-download");

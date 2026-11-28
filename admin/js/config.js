@@ -41,6 +41,12 @@
       whatsapp: "https://wa.me/+6285162992597",
     },
 
+    /* Prefix URL artikel di assets/data/articles.json (sama dengan entri yang sudah ada) */
+    articleUrlPrefix: "/blog-dialogika/blog/",
+
+    /* Lokasi articles.json (relatif dari admin/index.html) */
+    articlesJsonPath: "../assets/data/articles.json",
+
     /* Template path (relative to admin/index.html) */
     templatePath: "template/blog-template.html",
 
